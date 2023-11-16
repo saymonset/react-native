@@ -1,27 +1,48 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react'
-import { Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Background } from '../components/Background';
-import { HeaderTitle } from '../components/HeaderTitle';
-import { WhiteLogo } from '../components/WhiteLogo';
+import React, { useEffect } from 'react'
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm } from '../hooks/useForm';
-import { styles } from '../theme/appTheme';
+import { Background } from '../components/Background';
+import { WhiteLogo } from '../components/WhiteLogo';
 import { loginStyles } from '../theme/loginTheme';
+import { loginThunks, removeErrorThunks } from '../store/slices/login/loginThunks'
+import { LoadingScreen } from './LoadingScreen';
+
 
 interface Props extends StackScreenProps<any, any> {}
 
+
 export const LoginScreen = ({ navigation }: Props) => {
 
-
+      {/* REDUX TOOLKIT */}
+      
+  const { isLoading, message  } = useSelector( (state: store ) => state.loginStore)
+  const dispatch = useDispatch();
   const { email, password, onChange } = useForm({
      email: '',
      password: '' 
   });
 
 
+  const   onClearError = async () => {
+    removeErrorThunks(dispatch)
+} 
+
+
+useEffect(() => {
+    if(  message.length === 0 ) return;
+          Alert.alert( message , '',[{
+              text: 'Ok',
+              onPress:  onClearError
+          }]);
+          
+     }, [ message ])
+
   const onLogin = async () => {
     Keyboard.dismiss();
-    console.log( {email, password });
+    await dispatch(loginThunks( email, password));
 }
  
   return (
@@ -40,6 +61,8 @@ export const LoginScreen = ({ navigation }: Props) => {
                   <WhiteLogo />
 
                   <Text style={ loginStyles.title }>Login</Text>
+                 
+
                     <Text style={ loginStyles.label }>Email:</Text>
                     <TextInput 
                         placeholder="Ingrese su email:"
@@ -80,7 +103,8 @@ export const LoginScreen = ({ navigation }: Props) => {
                                             autoCapitalize="none"
                                             autoCorrect={ false }
                                         />
-                  
+                          
+                          {   ( isLoading ) && <LoadingScreen /> }           
                               {/* Boton login */}
                               <View style={ loginStyles.buttonContainer }>
                                   <TouchableOpacity
@@ -98,7 +122,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                               <View style={ loginStyles.newUserContainer  }>
                                   <TouchableOpacity
                                       activeOpacity={ 0.8 }
-                                      onPress={ () => navigation.replace('RegisterScreen') }
+                                      onPress={ () => navigation.replace('SendSmsScreen') }
                                   >
                                       <Text style={ [loginStyles.buttonText, loginStyles.buttonTextNewAaccount ] }>New Account</Text>
                                   </TouchableOpacity>

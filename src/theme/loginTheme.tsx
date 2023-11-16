@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 
 
@@ -45,6 +45,7 @@ export const loginStyles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 100,
         marginHorizontal:10,
+       
     },
     buttonblue: {
         borderWidth: 2,
@@ -60,6 +61,11 @@ export const loginStyles = StyleSheet.create({
     buttonText: {
         fontSize: 18,
         color: 'white',
+    },
+    buttonTextBlack: {
+        fontSize: 18,
+        //color: 'white',
+        fontWeight: 'bold'
     },
     buttonTextNewAaccount: {
         marginRight:30
@@ -77,5 +83,14 @@ export const loginStyles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 100
+    },
+    buttonReturn2: {
+       
+        //top: 2,
+        top: Platform.OS==='ios'? 6:6,
+        left: Platform.OS === 'ios'? 230: 350,
+        borderWidth: 1,
+        borderColor: 'black',
+        
     }
 });
