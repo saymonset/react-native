@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { KeyboardAvoidingView, Platform, Text, View, TextInput, TouchableOpacity, Keyboard, Alert, StyleSheet, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list'
+ 
 
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStyles } from '../theme/loginTheme'
@@ -14,11 +16,33 @@ import { FabButton } from '../components/FabButton';
 import { Register } from '../interfaces';
 import { LoadingScreen } from './LoadingScreen';
 import {  removeErrorThunks } from '../store/slices/register/index';
+import {  UseGender } from '../hooks/useGender';
 
 interface Props extends StackScreenProps<any,any>{}
 
 
 export const RegisterScreen = ( { navigation }: Props ) => {
+
+
+   // const {  getGenders, getSelectGenders } = useGender();
+    const [selected, setSelected] = React.useState("");
+    const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
+  
+    const data = [
+        {key:'1', value:'Mobiles', disabled:true},
+        {key:'2', value:'Appliances'},
+        {key:'3', value:'Cameras'},
+        {key:'4', value:'Computers', disabled:true},
+        {key:'5', value:'Vegetables'},
+        {key:'6', value:'Diary Products'},
+        {key:'7', value:'Drinks'},
+    ]
+
+    const onSelectTrigger = (value:string) => {
+        console.log(`Disparado desde el padre: ${value}`);
+        setSelectedGeneroId(value);
+    }
+
 
     const { token } = useSelector( (state: store ) => state.sendSmsStore);
     const { isLoading, message, resp } = useSelector( (state: store ) => state.registerStore);
@@ -66,7 +90,7 @@ export const RegisterScreen = ( { navigation }: Props ) => {
             state:"2016-03-03T08:00:00.000",
             city:"ADMIN_ROLE",
             birth:"2016-03-03T08:00:00.000",
-            gender_id:"65391c195f461c1c76e06647",
+            gender_id:selectedGeneroId,
             status: "true",
             token
           };
@@ -74,7 +98,7 @@ export const RegisterScreen = ( { navigation }: Props ) => {
  
       //   let register: Register = { name, lastname, password, ci, email, state, city, birth, gender_id, status, token  };
       let register: Register = { ...deleteregh  };
-
+          console.log({...register});
          await dispatch(registerThunks( register));
      }
 
@@ -95,6 +119,8 @@ export const RegisterScreen = ( { navigation }: Props ) => {
                             <WhiteLogo />
 
                             <Text style={ loginStyles.title }>Registro</Text>
+
+                          
 
                             <SafeAreaView 
                             style={[styles.container]}>
@@ -266,6 +292,18 @@ export const RegisterScreen = ( { navigation }: Props ) => {
                                         </View>  
                                         <View>
                                                     <Text style={ loginStyles.label }>Gender:</Text>
+                                                    {/* <SelectList 
+                                                            setSelected={(val) => setSelected(val)} 
+                                                            data={data} 
+                                                            save="key"
+                                                            onSelect= { () => onSelectTrigger() }
+                                                        /> */}
+
+                                                            <UseGender onPress={ onSelectTrigger }/>
+
+                                                       
+
+                                                  
                                                     <TextInput 
                                                         placeholder="Enter your Gender:"
                                                         placeholderTextColor="rgba(255,255,255,0.4)"

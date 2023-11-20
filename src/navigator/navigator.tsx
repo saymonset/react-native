@@ -12,6 +12,7 @@ import { RegisterScreen } from '../screens/RegisterScreen';
 
 import {  store } from '../store'
 import { SendSmsScreen } from '../screens/SendSmsScreen';
+import { DependentScreen } from '../screens/DependentScreen';
 
 
 const Stack = createStackNavigator();
@@ -31,17 +32,17 @@ export const Navigator = () => {
     >
       {  
       
-          (status !== 'authenticated')
+          (status == 'authenticated')
           ? (<>
-              
+                  
                   <Stack.Screen name="LoginScreen" component={ LoginScreen } />
                   <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } /> 
                   <Stack.Screen name="RegisterScreen" component={ RegisterScreen } />
-                  
             </>)
           : (<>
                {/** Este HomeScreen es el principa que lama el menu*/}
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                <Stack.Screen name="DependentScreen" component={ DependentScreen } />
                 <Stack.Screen name="TextInputScreen" component={TextInputScreen} />
                 <Stack.Screen name="PullToRefreshScreen" component={PullToRefreshScreen} />
                 <Stack.Screen name="CustomSectionListScreen" component={CustomSectionListScreen} />

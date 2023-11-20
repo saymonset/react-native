@@ -16,5 +16,14 @@ yarn add @react-native-async-storage/async-storage
  # Si no la reconoce, probar con
  npm install @react-native-async-storage/async-storage
 
+ # dropdown select list
+ yarn add react-native-dropdown-select-list
+
+
+ # Instalar table
+npm install react-native-table-component
+yarn add react-native-table-component
+
+npm i --save-dev @types/react-native-table-component
 
 npx pod-install

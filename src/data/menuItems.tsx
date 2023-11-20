@@ -58,5 +58,12 @@ export const menuItems: MenuItem[] = [
         icon: 'book-outline',
         component: 'RegisterScreen'
     },
+    {
+        name: 'Dependents',
+        icon: 'accessibility-outline',
+        component: 'DependentScreen'
+    },
+
+    
 ]
 
