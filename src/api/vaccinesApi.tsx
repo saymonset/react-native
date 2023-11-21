@@ -8,8 +8,8 @@ const vaccinesApi = axios.create({ baseURL });
 vaccinesApi.interceptors.request.use(
     async (config) => {
         const token = await AsyncStorage.getItem('token');
- 
-    
+        console.log('api')
+        console.log({ token  })
         if (token) {
               config.headers['X-Token'] = `Bearer ${token}`;
               config.headers['Content-Type'] = 'application/json';
@@ -19,6 +19,8 @@ vaccinesApi.interceptors.request.use(
         return config;
     },
     (error) => {
+        console.log('Desde api axios;')
+        console.log(error);
         return Promise.reject(error);
     }
 );

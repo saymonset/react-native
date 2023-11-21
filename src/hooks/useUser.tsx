@@ -4,18 +4,17 @@ import { useEffect } from 'react';
 import { View, Platform, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import vaccinesApi from '../api/vaccinesApi';
- 
 
 interface Props {
     onPress: (value:string)=> void;
   }
 
-export const UseGender = ({onPress}:Props) => {
+export const UseUser = ({onPress}:Props) => {
 
   const [selected, setSelected] = React.useState("");
   const [data,setData] = React.useState([]);
 
-  const getGenders = async () => {
+  const getObjects = async () => {
     try {
       let { data:{token} } = await vaccinesApi.post(`/login`, {
         ci: "12760187",
@@ -26,11 +25,17 @@ export const UseGender = ({onPress}:Props) => {
         await AsyncStorage.setItem('token', token ); 
       }
 
-      let  {data:{genders}} = await vaccinesApi.get(`/genders/20/0`);
+      let  {data:{users}} = await vaccinesApi.get(`/users/20/0`);
+
+
       
-      setData( genders.map((gender) => ({
-        key: gender._id.$oid,
-        value: gender.name,
+      
+      
+      setData( users.map((obj) => ({
+
+        key: obj.user._id.$oid,
+       // value: obj.more.name + ' ' +obj.more.lastname,
+        value: 'uuuusss',
         disabled: false
       })));
       //Set Data Variable
@@ -41,10 +46,11 @@ export const UseGender = ({onPress}:Props) => {
     }
   };
 
+ 
 
   useEffect(() => {
    
-    getGenders();
+    getObjects();
   }, []);
 
   return  (
@@ -55,9 +61,8 @@ export const UseGender = ({onPress}:Props) => {
                  dropdownTextStyles={{color:'white'}} 
                  setSelected={setSelected}
                  data={data} 
-                 search={true}
-                 placeholder="select gender"
-                
+                 search={false}
+                 placeholder="select user"
                  onSelect={() => onPress(selected)} />
 )
 };

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
- 
+import {  Register } from '../../../interfaces/register-interfaces';
  
 
   const initialState: Register = {

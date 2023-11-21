@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, Row, Rows } from 'react-native-table-component';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { DependentComponent } from '../components/DependentComponent';
 
 
 export const DependentScreen = () => {
@@ -62,6 +64,9 @@ export const DependentScreen = () => {
     setTableData(newData);
   };
 
+
+  
+
   return (
     <View style={{marginHorizontal:20, marginVertical:60}}>
       <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
@@ -93,49 +98,18 @@ export const DependentScreen = () => {
         />
       </Table>
 
-      <TouchableOpacity onPress={addRow} style={{ marginTop: 10 }}>
+      <TouchableOpacity onPress={ () => setIsVisible(true) } style={{ marginTop: 10 }}>
         <Ionicons name="add" size={20} color="green" />
       </TouchableOpacity>
 
-      <Modal
-             animationType='fade'
-             visible={ isVisible }
-            transparent= {true}
-        >
-            {/** Background color negro */}
-            <View style = {{
-                flex:1, 
-                // height:100,
-                // width:100,
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                justifyContent: 'center',
-                alignItems:'center'
-            }}>
-
-               {/**  Contendido del modal */}
-              <View style ={{
-                   width:200,
-                   height:200,
-                   backgroundColor: 'white',
-                   justifyContent:'center',
-                   alignItems:'center',
-                   shadowOffset:{
-                    width:0,
-                    height:10
-                   },
-                   shadowOpacity: 0.25,
-                   elevation: 10,
-                   borderRadius: 5
-              }}>
-                    <Text style={{ fontSize:20, fontWeight:'bold'}}>  Modal</Text>
-                    <Text  style={{ fontSize:16, fontWeight:'300', marginBottom: 20}}>  Cuerpo del modal</Text>
-                    <TouchableOpacity onPress= { () => setIsVisible( false )} style={{ marginTop: 10 }}>
-                        <Ionicons name="close" size={20} color="red" />
-                    </TouchableOpacity>
-              </View>
-
-            </View>
-        </Modal>
+      <Modal animationType="fade" visible={isVisible} transparent={true}>
+      <DependentComponent 
+            isVisible={isVisible}
+            onClose={() => setIsVisible(false)}
+            width={300}
+            height={690}
+           ></DependentComponent>
+      </Modal>
     </View>
   );
 };

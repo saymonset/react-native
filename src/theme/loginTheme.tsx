@@ -8,9 +8,10 @@ export const loginStyles = StyleSheet.create({
         paddingHorizontal: 30,
         justifyContent:'center',
         height: 600,
-        marginBottom: 50
+        marginBottom: 100
     },
     title: {
+        textAlign:"center",
         color: 'white',
         fontSize: 30,
         fontWeight: 'bold',

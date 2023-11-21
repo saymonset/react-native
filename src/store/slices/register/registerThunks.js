@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingRegister, setRegisterResponse, addMessage,removeMessage  } from './registerSlice'
- import { Register } from '../../../interfaces';
+import {  Register } from '../../../interfaces/register-interfaces';
 
 
 
@@ -14,17 +14,12 @@ export const registerThunks = ( {...register}:Register ): AnyAction  => {
 
           const { token } = register;
 
-          console.log({token})
           if (token){
             await AsyncStorage.setItem('token', token ); 
           }
-console.log('-------1----------------');
           // TODO: realizar peticion http
            const {data} = await vaccinesApi.post(`/users`,{ ...register  } );
        
-           console.log('-------2----------------');
-
-
           const { statusCode, body, message, resp, } = data;
 
           console.log({data});
