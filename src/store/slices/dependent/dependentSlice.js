@@ -17,6 +17,7 @@ import {  Dependent } from '../../../interfaces/dependent-interfaces';
     message: '',
     resp: false,
     statusCode:'',
+    tableData:[]
   };
 
 export const dependentSlice = createSlice({
@@ -25,6 +26,7 @@ export const dependentSlice = createSlice({
     reducers: {
         startLoadingDependent: (state, /* action */ ) => {
             state.isLoading = true;
+            state.resp = false;
         },
         setDependentResponse: ( state, { payload } ) => {
             state.statusCode = payload.statusCode;
@@ -32,16 +34,20 @@ export const dependentSlice = createSlice({
             state.message = payload.message;
             state.isLoading = false;
         },
+        loadDataDependent: ( state, { payload } ) => {
+            state.tableData = payload;
+            state.isLoading = false;
+        },
        addMessage: ( state, { payload } ) =>{
                 state.isLoading = false;
-                console.log({payload})
                 state.message = payload
         },
         removeMessage: ( state, { payload }) => {
             state.message = '';
             state.isLoading = false;
+           
         },
     }
 });
 // Action creators are generated for each case reducer function
-export const { startLoadingDependent, setDependentResponse, addMessage, removeMessage } = dependentSlice.actions;
+export const { startLoadingDependent, setDependentResponse, addMessage, removeMessage, loadDataDependent } = dependentSlice.actions;

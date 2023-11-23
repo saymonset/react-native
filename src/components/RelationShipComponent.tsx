@@ -4,42 +4,30 @@ import { useEffect } from 'react';
 import { View, Platform, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import vaccinesApi from '../api/vaccinesApi';
+import {  useSelector } from 'react-redux';
 
 interface Props {
     onPress: (value:string)=> void;
   }
 
-export const UseUser = ({onPress}:Props) => {
+export const UseRelationShipComponent = ({onPress}:Props) => {
 
   const [selected, setSelected] = React.useState("");
   const [data,setData] = React.useState([]);
 
   const getObjects = async () => {
     try {
-      let { data:{token} } = await vaccinesApi.post(`/login`, {
-        ci: "12760187",
-        password: "123456",
-      });
+     
+ 
 
-      if (token){
-        await AsyncStorage.setItem('token', token ); 
-      }
+      let  {data:{relationships}} = await vaccinesApi.get(`/relationships/20/0`);
 
-      let  {data:{users}} = await vaccinesApi.get(`/users/20/0`);
-
-
-      
-      
-      
-      setData( users.map((obj) => ({
-
-        key: obj.user._id.$oid,
-       // value: obj.more.name + ' ' +obj.more.lastname,
-        value: 'uuuusss',
+ 
+      setData( relationships.map((obj) => ({
+        key: obj._id.$oid,
+        value: obj.name ,
         disabled: false
       })));
-      //Set Data Variable
-     
 
     } catch (error) {
       console.error(error);
@@ -49,7 +37,6 @@ export const UseUser = ({onPress}:Props) => {
  
 
   useEffect(() => {
-   
     getObjects();
   }, []);
 
@@ -62,7 +49,7 @@ export const UseUser = ({onPress}:Props) => {
                  setSelected={setSelected}
                  data={data} 
                  search={false}
-                 placeholder="select user"
+                 placeholder="select relationship"
                  onSelect={() => onPress(selected)} />
 )
 };

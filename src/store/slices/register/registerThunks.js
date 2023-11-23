@@ -3,16 +3,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingRegister, setRegisterResponse, addMessage,removeMessage  } from './registerSlice'
 import {  Register } from '../../../interfaces/register-interfaces';
-
+import {  useSelector } from 'react-redux';
 
 
 export const registerThunks = ( {...register}:Register ): AnyAction  => {
     return async ( dispatch, getState) => {
 
+      const {   token  } = useSelector( (state: store ) => state.loginStore)
+
       try {
           dispatch( startLoadingRegister());
-
-          const { token } = register;
 
           if (token){
             await AsyncStorage.setItem('token', token ); 
@@ -41,8 +41,7 @@ export const registerThunks = ( {...register}:Register ): AnyAction  => {
            
           
       } catch (error) {
-        console.log('-------3----------------');
-        console.error(error);
+      
            dispatch( addMessage("Error: "+error))
       }
    

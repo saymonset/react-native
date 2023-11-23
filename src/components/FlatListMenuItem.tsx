@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     },
     itemText: {
         marginLeft: 10,
-        fontSize: 19
+        fontSize: 19,
+        color: 'white',
     }
 })

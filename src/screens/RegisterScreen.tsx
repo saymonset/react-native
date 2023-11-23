@@ -16,7 +16,7 @@ import { FabButton } from '../components/FabButton';
 import { Register } from '../interfaces';
 import { LoadingScreen } from './LoadingScreen';
 import {  removeErrorThunks } from '../store/slices/register/index';
-import {  UseGender } from '../hooks/useGender';
+import {  UseGenderComponent } from '../components/GenderComponent';
 import { styles } from '../theme/registerTheme';
 
 interface Props extends StackScreenProps<any,any>{}
@@ -29,15 +29,7 @@ export const RegisterScreen = ( { navigation }: Props ) => {
     const [selected, setSelected] = React.useState("");
     const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
   
-    const data = [
-        {key:'1', value:'Mobiles', disabled:true},
-        {key:'2', value:'Appliances'},
-        {key:'3', value:'Cameras'},
-        {key:'4', value:'Computers', disabled:true},
-        {key:'5', value:'Vegetables'},
-        {key:'6', value:'Diary Products'},
-        {key:'7', value:'Drinks'},
-    ]
+ 
 
     const onSelectTrigger = (value:string) => {
         console.log(`Disparado desde el padre: ${value}`);
@@ -108,7 +100,7 @@ export const RegisterScreen = ( { navigation }: Props ) => {
     return (
         <>
             <KeyboardAvoidingView
-                style={{ flex: 1, backgroundColor: '#5856D6' }}
+                style={{ flex: 1, backgroundColor: '#585858' }}
                 behavior={ ( Platform.OS === 'ios') ? 'padding': 'height' }
             >
 
@@ -289,35 +281,7 @@ export const RegisterScreen = ( { navigation }: Props ) => {
                                         </View>  
                                         <View>
                                                     <Text style={ loginStyles.label }>Gender:</Text>
-                                                    {/* <SelectList 
-                                                            setSelected={(val) => setSelected(val)} 
-                                                            data={data} 
-                                                            save="key"
-                                                            onSelect= { () => onSelectTrigger() }
-                                                        /> */}
-
-                                                            <UseGender onPress={ onSelectTrigger }/>
-
-                                                       
-
-                                                  
-                                                    <TextInput 
-                                                        placeholder="Enter your Gender:"
-                                                        placeholderTextColor="rgba(255,255,255,0.4)"
-                                                        underlineColorAndroid="white"
-                                                        style={[ 
-                                                            loginStyles.inputField,
-                                                            ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS
-                                                        ]}
-                                                        selectionColor="white"
-
-                                                        onChangeText={ (value) => onChange(value, 'gender_id') }
-                                                        value={gender_id }
-                                                        onSubmitEditing={ onRegister }
-
-                                                        autoCapitalize="words"
-                                                        autoCorrect={ false }
-                                                    />
+                                                            <UseGenderComponent onPress={ onSelectTrigger }/>
                                         </View>  
                                         <View>
                                                     <Text style={ loginStyles.label }>City:</Text>

@@ -21,9 +21,6 @@ yarn add @react-native-async-storage/async-storage
 
 
  # Instalar table
-npm install react-native-table-component
-yarn add react-native-table-component
-
-npm i --save-dev @types/react-native-table-component
+ yarn add react-native-reanimated-table  
 
 npx pod-install

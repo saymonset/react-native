@@ -32,7 +32,7 @@ export const Navigator = () => {
     >
       {  
       
-          (status == 'authenticated')
+          (status !== 'authenticated')
           ? (<>
                   
                   <Stack.Screen name="LoginScreen" component={ LoginScreen } />

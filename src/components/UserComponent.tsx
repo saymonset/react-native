@@ -9,28 +9,24 @@ interface Props {
     onPress: (value:string)=> void;
   }
 
-export const UseRelationShip = ({onPress}:Props) => {
+export const UseUserComponent = ({onPress}:Props) => {
 
   const [selected, setSelected] = React.useState("");
   const [data,setData] = React.useState([]);
 
   const getObjects = async () => {
     try {
-      let { data:{token} } = await vaccinesApi.post(`/login`, {
-        ci: "12760187",
-        password: "123456",
-      });
+      
+    
+      let  {data:{users}} = await vaccinesApi.get(`/users/20/0`);
 
-      if (token){
-        await AsyncStorage.setItem('token', token ); 
-      }
 
-      let  {data:{relationships}} = await vaccinesApi.get(`/relationships/20/0`);
-
- 
-      setData( relationships.map((obj) => ({
-        key: obj._id.$oid,
-        value: obj.name ,
+      
+      
+      
+      setData( users.map((obj) => ({
+        key: obj.user._id.$oid,
+        value: obj.more.name + ' ' +obj.more.lastname,
         disabled: false
       })));
       //Set Data Variable
@@ -44,6 +40,7 @@ export const UseRelationShip = ({onPress}:Props) => {
  
 
   useEffect(() => {
+   
     getObjects();
   }, []);
 
@@ -56,7 +53,7 @@ export const UseRelationShip = ({onPress}:Props) => {
                  setSelected={setSelected}
                  data={data} 
                  search={false}
-                 placeholder="select relationship"
+                 placeholder="select user"
                  onSelect={() => onPress(selected)} />
 )
 };

@@ -5,26 +5,26 @@ import { View, Platform, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import vaccinesApi from '../api/vaccinesApi';
  
+ 
 
 interface Props {
     onPress: (value:string)=> void;
   }
 
-export const UseGender = ({onPress}:Props) => {
+export const UseGenderComponent = ({onPress}:Props) => {
+
+  
+
+
 
   const [selected, setSelected] = React.useState("");
   const [data,setData] = React.useState([]);
 
   const getGenders = async () => {
     try {
-      let { data:{token} } = await vaccinesApi.post(`/login`, {
-        ci: "12760187",
-        password: "123456",
-      });
+     
 
-      if (token){
-        await AsyncStorage.setItem('token', token ); 
-      }
+     
 
       let  {data:{genders}} = await vaccinesApi.get(`/genders/20/0`);
       
