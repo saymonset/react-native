@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Platform, Alert, Keyboard } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Platform, Alert, Keyboard, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, Row, Cell } from 'react-native-reanimated-table';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,12 +10,16 @@ import {  removeErrorThunks, loadDataThunks } from '../store/slices/dependent/de
 import { useDependent } from '../hooks/useDependent';
 import { DesdeLimite } from '../interfaces/dependent-interfaces';
 
+import { NextPrevioPage } from '../interfaces';
+import { UseHandlerPag } from '../hooks/useHandlerPag';
+
 export const DependentScreen = () => {
 
  
     const {  setIsVisible, isVisible, updateRow, deleteRow   } = useDependent();
+    const { message, resp, tableData, total, limite, desde, currentPage } = useSelector( (state: store ) => state.dependentStore);
+    const {page, whereGo } = UseHandlerPag(currentPage==0? currentPage + 1:currentPage);
 
-    const { message, resp, tableData } = useSelector( (state: store ) => state.dependentStore);
 
     const dispatch = useDispatch();
 
@@ -23,10 +27,11 @@ export const DependentScreen = () => {
 
   const onRegister = async() => {
         console.log('Hola mundo simons');
-        console.log(JSON.stringify(table))
+        console.log(JSON.stringify(tableData))
         Keyboard.dismiss();
       
         //  onDependent();
+        //Ci..10169949
   }
 
   const   onClearError = async () => {
@@ -34,19 +39,49 @@ export const DependentScreen = () => {
 } 
 
  {/** LLenar data */}
-const loadData = async(limiteDesde: DesdeLimite) => {
-  const { limite, desde } = limiteDesde;
-    await dispatch(loadDataThunks( limite, desde ));
+const loadData = async(limiteDesde: DesdeLimite, next: NextPrevioPage) => {
+    
+    await dispatch(loadDataThunks( limiteDesde, page ));
+    whereGo(next, total);
+    console.log({page})
+   
 }
 
  
+const handlePreviousPage = () => {
+    let limiteDesde ={
+      limite,
+      desde:desde-limite>=0?desde-limite:limite-desde
+  }
+  let prev: NextPrevioPage ={
+    nextPage:'prev'
+  }
+  loadData(limiteDesde, prev)
+};
+
+const handleNextPage  = () => {
+  let limiteDesde ={
+      limite,
+      desde:desde+limite
+  }
+
+  let next: NextPrevioPage ={
+    nextPage:'next'
+  }
+ 
+   loadData(limiteDesde, next)
+ 
+};
   
   useEffect(() => {
     let limiteDesde ={
-         limite:30,
-         desde:0
+         limite,
+         desde
     }
-    loadData(limiteDesde)
+    let none: NextPrevioPage ={
+      nextPage:'none'
+    }
+    loadData(limiteDesde, none)
   }, [ ])
 
 
@@ -66,26 +101,6 @@ const loadData = async(limiteDesde: DesdeLimite) => {
 
 
 
-
-const itemsPerPage = 10;
-
-const [currentPage, setCurrentPage] = useState(1);
-
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-
-const handlePreviousPage = () => {
-  if (currentPage > 1) {
-    setCurrentPage(currentPage - 1);
-  }
-};
-
-const handleNextPage = () => {
-  const totalPages = Math.ceil(tableData.length / itemsPerPage);
-  if (currentPage < totalPages) {
-    setCurrentPage(currentPage + 1);
-  }
-};
 
   return (
     <>
@@ -124,6 +139,14 @@ const handleNextPage = () => {
             ))}
           </Table>
 
+          {/* Controles del paginador */}
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20 }}>
+        <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1} />
+        <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
+        <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite )} />
+      </View>
+
+      {/* totalPages */}
           
 
           

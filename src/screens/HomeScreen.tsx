@@ -9,7 +9,7 @@ import { HeaderTitle } from '../components/HeaderTitle';
 import { menuItems } from '../data/menuItems';
 import {  ItemSeparator } from '../components/ItemSeparator';
 import { loginStyles } from '../theme/loginTheme';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Background } from '../components/Background';
 
 interface Props extends StackScreenProps<any, any> {}
@@ -18,8 +18,6 @@ interface Props extends StackScreenProps<any, any> {}
 export const HomeScreen = ({ navigation }: Props) => {
 
   const dispatch = useDispatch();
-
-
 
   const   onLogout = async () => {
    
@@ -39,6 +37,7 @@ export const HomeScreen = ({ navigation }: Props) => {
                                         activeOpacity={ 0.8 }
                                         style={ loginStyles.button }
                                     >
+                                       <Text style={ [loginStyles.buttonText, loginStyles.buttonTextNewAaccount ] }>Logout</Text>
                                     </TouchableOpacity>
                     </View>
                     <FlatList

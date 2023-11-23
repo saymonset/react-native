@@ -21,7 +21,7 @@ export interface Dependent {
     relationship_id: string;
     status:          boolean;
     user_id:         string;
-    tableData?: Dependent[];
+   
 }
 
 export interface ID {

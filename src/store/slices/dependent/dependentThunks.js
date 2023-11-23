@@ -1,7 +1,9 @@
 import { AnyAction } from 'redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingDependent, setDependentResponse, addMessage, removeMessage, loadDataDependent   } from './dependentSlice'
- import { Dependent, DesdeLimite } from '../../../interfaces';
+ import { Dependent, Dependentss, DesdeLimite, NextPrevioPage } from '../../../interfaces';
+ import { UseHandlerPag } from '../../../hooks/useHandlerPag';
 
 
 export const dependentThunks = ( {...dependent}:Dependent ): AnyAction  => {
@@ -29,18 +31,32 @@ export const dependentThunks = ( {...dependent}:Dependent ): AnyAction  => {
 }
 
 
-export const loadDataThunks = (  limite = 30, desde =0): AnyAction  => {
+
+export const loadDataThunks = ( insertDependent: DesdeLimite, page = 1): AnyAction  => {
   return async ( dispatch, getState) => {
     try {
+    
       dispatch( startLoadingDependent());
+      const { desde, limite } = insertDependent;
+
+      console.log('----------------e----------')
+
+
+     
+
+
+      
+      
       const {data} = await vaccinesApi.get(`/dependent/${limite}/${desde}`);
+      const { dependents, total } = data;
+      const payload: Dependentss = {
+        dependents,
+        desde,
+        limite,
+        currentPage:page,
+        total
+      };
 
-      const { dependents } = data;
-
-     
-
-     
-      const payload = dependents;
       dispatch( loadDataDependent(payload) );
     } catch (error) {
          dispatch( addMessage("Error: "+error))

@@ -56,7 +56,6 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
                     relationship_id,
                     status 
                   };
-                console.log({insertDependent})
                 await dispatch(dependentThunks( insertDependent));
                 return onRegister();
 

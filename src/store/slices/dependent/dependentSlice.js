@@ -17,7 +17,11 @@ import {  Dependent } from '../../../interfaces/dependent-interfaces';
     message: '',
     resp: false,
     statusCode:'',
-    tableData:[]
+    tableData: [],
+    desde:      0,
+    limite:     2,
+    total:      0,
+    currentPage:0,
   };
 
 export const dependentSlice = createSlice({
@@ -35,8 +39,12 @@ export const dependentSlice = createSlice({
             state.isLoading = false;
         },
         loadDataDependent: ( state, { payload } ) => {
-            state.tableData = payload;
+            state.tableData = payload.dependents;
             state.isLoading = false;
+            state.desde = payload.desde;
+            state.limite = payload.limite;
+            state.total = payload.total;
+            state.currentPage = payload.currentPage;
         },
        addMessage: ( state, { payload } ) =>{
                 state.isLoading = false;
