@@ -6,7 +6,7 @@ import {  registerThunks } from '../store/slices/register'
 
 import { useForm } from './useForm';
 import { Dependent } from '../interfaces';
-import { dependentThunks } from '../store/slices/dependent/dependentThunks';
+import { dependentThunks } from '../store/slices/dependent/dependentThunks.js';
 
 export const useDependent = () => {
 

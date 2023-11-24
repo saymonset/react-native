@@ -1,2 +1,2 @@
 export * from './dependentSlice'
-export * from './dependentThunks'
+export * from './dependentThunks.js'

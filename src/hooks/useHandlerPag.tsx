@@ -1,37 +1,44 @@
 import React, { useState } from 'react'
 import { NextPrevioPage } from '../interfaces';
 
+
+
 export const UseHandlerPag = ( currentPage = 1) => {
 
 const [page, setPage] = useState(currentPage);
 
-const handlePreviousPage = (total: number) => {
+
+const handlePreviousPage =  (total: number) => {
   if (page > 1) {
     setPage((page) =>page - 1);
   }
 };
+ 
 
-const handleNextPage = (total: number) => {
+const handleNextPage =  (total: number) => {
   console.log('--1-')
   console.log({total, page})
   if (page < total) {
-    setPage( (value) =>value + 1);
-    console.log({page})
+    setPage((prevPage) => {
+      const nextPage = prevPage + 1;
+      return nextPage;
+    });
+    console.log(page)
     console.log('--2-')
   }
 };
 
-const whereGo = (nextPrevioPage: NextPrevioPage, total=0) => {
+const whereGo =   (nextPrevioPage: NextPrevioPage, total=0) => {
      const { nextPage } = nextPrevioPage;
      console.log({nextPage})
     switch (nextPage) {
           case 'next':
             // Lógica para ir a la siguiente página
-            handleNextPage(total);
+             handleNextPage(total);
             break;
           case 'prev':
             // Lógica para ir a la página anterior
-            handlePreviousPage(total);
+             handlePreviousPage(total);
             break;
           case 'none':
             // Lógica para no realizar ninguna acción
@@ -46,7 +53,8 @@ const whereGo = (nextPrevioPage: NextPrevioPage, total=0) => {
 
     return {
       page,
-      whereGo
+      whereGo,
+    
     }
   
 }

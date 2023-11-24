@@ -6,20 +6,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { DependentComponent } from '../components/DependentComponent';
 import { Background } from '../components/Background';
 import { useDispatch, useSelector } from 'react-redux';
-import {  removeErrorThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks';
+import {  removeErrorThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks.js';
 import { useDependent } from '../hooks/useDependent';
 import { DesdeLimite } from '../interfaces/dependent-interfaces';
 
 import { NextPrevioPage } from '../interfaces';
 import { UseHandlerPag } from '../hooks/useHandlerPag';
+import { LoadingScreen } from './LoadingScreen';
+
 
 export const DependentScreen = () => {
 
  
     const {  setIsVisible, isVisible, updateRow, deleteRow   } = useDependent();
-    const { message, resp, tableData, total, limite, desde, currentPage } = useSelector( (state: store ) => state.dependentStore);
-    const {page, whereGo } = UseHandlerPag(currentPage==0? currentPage + 1:currentPage);
+    const { message, resp, tableData, total, limite, desde, currentPage, isLoading } = useSelector( (state: store ) => state.dependentStore);
 
+    //const {page, whereGo } = UseHandlerPag(currentPage==0? currentPage + 1:currentPage);
+    
 
     const dispatch = useDispatch();
 
@@ -39,12 +42,9 @@ export const DependentScreen = () => {
 } 
 
  {/** LLenar data */}
-const loadData = async(limiteDesde: DesdeLimite, next: NextPrevioPage) => {
+const loadData = async(limiteDesde: DesdeLimite, nextPrev: NextPrevioPage) => {
     
-    await dispatch(loadDataThunks( limiteDesde, page ));
-    whereGo(next, total);
-    console.log({page})
-   
+    await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev ));
 }
 
  
@@ -68,9 +68,7 @@ const handleNextPage  = () => {
   let next: NextPrevioPage ={
     nextPage:'next'
   }
- 
    loadData(limiteDesde, next)
- 
 };
   
   useEffect(() => {
@@ -96,6 +94,14 @@ const handleNextPage  = () => {
     {/** Ocultamos el modal */}
     if (resp){
        setIsVisible(false);
+          let limiteDesde ={
+            limite,
+            desde:0
+          }
+          let prev: NextPrevioPage ={
+            nextPage:'none'
+          }
+          loadData(limiteDesde, prev)
     }
 }, [ message ]);
 
@@ -138,12 +144,12 @@ const handleNextPage  = () => {
               />
             ))}
           </Table>
-
+          {   ( isLoading ) && <LoadingScreen /> }          
           {/* Controles del paginador */}
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20 }}>
-        <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1} />
+        <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
         <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
-        <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite )} />
+        <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite ) ||isLoading} />
       </View>
 
       {/* totalPages */}

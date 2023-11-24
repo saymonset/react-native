@@ -31,29 +31,58 @@ export const dependentThunks = ( {...dependent}:Dependent ): AnyAction  => {
 }
 
 
+const handlePreviousPage =  (total, currentPage) => {
+  if (currentPage > 1) {
+    return currentPage = currentPage -1;
+  }
+  return currentPage;
+};
+ 
 
-export const loadDataThunks = ( insertDependent: DesdeLimite, page = 1): AnyAction  => {
+const handleNextPage =  (total, currentPage) => {
+  
+  if (currentPage < total) {
+     return currentPage = currentPage + 1;
+  }
+  return currentPage;
+};
+
+const whereGo =   (nextPrevioPage, total, currentPage) => {
+  const { nextPage } = nextPrevioPage;
+ switch (nextPage) {
+       case 'next':
+         // Lógica para ir a la siguiente página
+         return handleNextPage(total, currentPage);
+         break;
+       case 'prev':
+         // Lógica para ir a la página anterior
+         return handlePreviousPage(total, currentPage);
+         break;
+       case 'none':
+         // Lógica para no realizar ninguna acción
+         return currentPage = 1;
+         break;
+       default:
+         break;
+     }
+     return currentPage;
+}
+
+export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextPrev): AnyAction  => {
   return async ( dispatch, getState) => {
     try {
     
       dispatch( startLoadingDependent());
-      const { desde, limite } = insertDependent;
-
-      console.log('----------------e----------')
-
-
-     
-
-
-      
-      
+      const { desde, limite } = desdeLimite;
+      console.log({desde,limite})
       const {data} = await vaccinesApi.get(`/dependent/${limite}/${desde}`);
       const { dependents, total } = data;
+      currentPage = whereGo (nextPrev, total, currentPage);
       const payload: Dependentss = {
         dependents,
         desde,
         limite,
-        currentPage:page,
+        currentPage,
         total
       };
 

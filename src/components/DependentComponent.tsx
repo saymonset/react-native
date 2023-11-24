@@ -18,7 +18,7 @@ import { CustomSwitch } from './CustomSwitch';
 import { UseRelationShipComponent } from './RelationShipComponent';
 import { useDependent } from '../hooks/useDependent';
 import { stylesModal } from '../theme/modalTheme';
-import { dependentThunks, removeErrorThunks} from '../store/slices/dependent/dependentThunks';
+import { dependentThunks, removeErrorThunks} from '../store/slices/dependent/dependentThunks.js';
 import { useNavigation } from '@react-navigation/native';
  
 
