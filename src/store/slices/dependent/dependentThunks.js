@@ -74,12 +74,12 @@ export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextP
     
       dispatch( startLoadingDependent());
       const { desde, limite } = desdeLimite;
-      console.log({desde,limite})
       const {data} = await vaccinesApi.get(`/dependent/${limite}/${desde}`);
       const { dependents, total } = data;
       currentPage = whereGo (nextPrev, total, currentPage);
       const payload: Dependentss = {
         dependents,
+        birth:'',
         desde,
         limite,
         currentPage,
@@ -96,6 +96,7 @@ export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextP
 
  
 export const removeErrorThunks = (dispatch): AnyAction => {
+       
       dispatch(removeMessage());
       return
   };

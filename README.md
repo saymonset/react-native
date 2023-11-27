@@ -23,4 +23,10 @@ yarn add @react-native-async-storage/async-storage
  # Instalar table
  yarn add react-native-reanimated-table  
 
+ # datepicker
+    yarn add @react-native-community/datetimepicker --save
+    yarn add react-native-elements
+
+yarn add react-native-modal-datetime-picker
+
 npx pod-install

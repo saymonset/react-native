@@ -13,11 +13,15 @@ import { DesdeLimite } from '../interfaces/dependent-interfaces';
 import { NextPrevioPage } from '../interfaces';
 import { UseHandlerPag } from '../hooks/useHandlerPag';
 import { LoadingScreen } from './LoadingScreen';
+import { useNavigation } from '@react-navigation/native';
+import { HomeScreen } from './HomeScreen';
 
-
-export const DependentScreen = () => {
 
  
+export const DependentScreen = () => {
+
+    const navigation = useNavigation();
+
     const {  setIsVisible, isVisible, updateRow, deleteRow   } = useDependent();
     const { message, resp, tableData, total, limite, desde, currentPage, isLoading } = useSelector( (state: store ) => state.dependentStore);
 
@@ -29,13 +33,18 @@ export const DependentScreen = () => {
 
 
   const onRegister = async() => {
-        console.log('Hola mundo simons');
-        console.log(JSON.stringify(tableData))
+        
+        
         Keyboard.dismiss();
       
         //  onDependent();
         //Ci..10169949
   }
+
+  const   onBack = async () => {
+     Keyboard.dismiss();
+     navigation.navigate( 'HomeScreen' as never)
+}
 
   const   onClearError = async () => {
     await removeErrorThunks(dispatch)
@@ -43,7 +52,6 @@ export const DependentScreen = () => {
 
  {/** LLenar data */}
 const loadData = async(limiteDesde: DesdeLimite, nextPrev: NextPrevioPage) => {
-    
     await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev ));
 }
 
@@ -114,19 +122,18 @@ const handleNextPage  = () => {
      <Background></Background>
 
     
-     
-        <View style={{ marginHorizontal: 20, marginVertical: 60 }}>
+     <View style={{ marginHorizontal: 20, marginVertical: 60 }}>
           <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
             <Row
               data={['Name', 'Lastname', 'Email', 'Phone', 'Actions']}
               style={[{ backgroundColor: '#585858'}]}
               textStyle={{ margin: 6, color: 'white' }}
             />
-            {tableData.map((rowData, index) => (
+            {tableData && tableData.map((rowData, index) => (
               <Row
                 key={index}
                 data={[
-                  rowData.name,
+                  rowData.name ,
                   rowData.lastname,
                   rowData.email,
                   rowData.phone,
@@ -139,7 +146,7 @@ const handleNextPage  = () => {
                     </TouchableOpacity>
                   </View>,
                 ]}
-                style={[{ backgroundColor: 'white'}]}
+                style={[{ backgroundColor: rowData.isUser ? 'gray' : 'white'}]}
                 textStyle={{ margin: 6 ,  color: '#000000' }}
               />
             ))}
@@ -153,21 +160,26 @@ const handleNextPage  = () => {
       </View>
 
       {/* totalPages */}
-          
-
-          
-
           <TouchableOpacity onPress={() => setIsVisible(true)} style={{ marginTop: 10 }}>
             <Ionicons name="add" size={20} color="white" />
           </TouchableOpacity>
 
           <Modal animationType="fade" visible={isVisible} transparent={true}>
-       
-            <DependentComponent isVisible={isVisible} onClose={() => setIsVisible(false)} 
-            onRegister = { ()=>onRegister()} 
-            width={300} height={690} />
+                <DependentComponent isVisible={isVisible} onClose={() => setIsVisible(false)} 
+                onRegister = { ()=>onRegister()} 
+                width={300} height={690} />
           </Modal>
         </View>
+   
+        
+        <View style={{ flexDirection: 'row',justifyContent:'center', marginBottom:0, marginHorizontal:1, top:600 }}>
+          <TouchableOpacity onPress={() => { onBack() }} style={{ marginTop: 0 }}>
+              <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
+          </TouchableOpacity>
+      </View>
+      
+
+
     </>
   );
 };

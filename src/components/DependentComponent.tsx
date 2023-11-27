@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { KeyboardAvoidingView, Platform, Text, View, TextInput, TouchableOpacity, Keyboard, Alert, StyleSheet, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { KeyboardAvoidingView, Platform, Text, View, TextInput, TouchableOpacity, Keyboard, Alert, StyleSheet, SafeAreaView, ScrollView, Modal, TouchableWithoutFeedback, StyleProp, ViewStyle, Button } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,6 +21,8 @@ import { useDependent } from '../hooks/useDependent';
 import { stylesModal } from '../theme/modalTheme';
 import { dependentThunks, removeErrorThunks} from '../store/slices/dependent/dependentThunks.js';
 import { useNavigation } from '@react-navigation/native';
+import { CalendarComponent } from './CalendarComponent'
+import DatePicker from '@react-native-community/datetimepicker';
  
 
 interface Props extends StackScreenProps<any,any>{}
@@ -35,7 +38,7 @@ interface Props1  {
 export const DependentComponent = ( { onClose, onRegister, width, height }: Props1 ) => {
 
     const dispatch = useDispatch();
-    const { selectedGeneroId, selectedUserId, selecteRelationShipId, name,  lastname,  phone, email, birth, status, onChange,
+    const { selectedGeneroId, selectedUserId, selecteRelationShipId, name,  lastname,  phone, birth, email, status, onChange,
         onGeneroSelectTrigger, onUserSelectTrigger, onRelationShipSelectTrigger, onDependent} = useDependent();
 
         const { isLoading } = useSelector( (state: store ) => state.dependentStore);
@@ -62,8 +65,11 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
              }
             
 
+             
           
-      
+             const onDateSelection = (date:Date)=>{
+                  onChange(date, 'birth')
+              }
      
 
 
@@ -134,34 +140,16 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
                                                                                             autoCorrect={ false }
                                                                                         />
                                                                                 </View>
+
                                                                                 <View>
-                                                                                            <Text style={ loginStyles.label }>Birthday:</Text>
-                                                                                            <TextInput 
-                                                                                                placeholder="Enter your birthday:"
-                                                                                                placeholderTextColor="rgba(255,255,255,0.4)"
-                                                                                                underlineColorAndroid="white"
-                                                                                                style={[ 
-                                                                                                    loginStyles.inputField,
-                                                                                                    ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS
-                                                                                                ]}
-                                                                                                selectionColor="white"
-
-                                                                                                onChangeText={ (value) => onChange(value, 'birth') }
-                                                                                                value={ birth }
-                                                                                                onSubmitEditing={ onDependent }
-
-                                                                                                autoCapitalize="words"
-                                                                                                autoCorrect={ false }
-                                                                                            />
-                                                                                </View>    
+                                                                                    <Text style={ loginStyles.label }>Birth:</Text>
+                                                                                    <CalendarComponent onDateSelection= {(value) => onDateSelection(value)}/>
+                                                                                </View>
                                                                                 <View>
                                                                                             <Text style={ loginStyles.label }>Gender:</Text>
                                                                                             < UseGenderComponent onPress={ (value) => onGeneroSelectTrigger(value) }/>
                                                                                 </View>  
-                                                                                <View>
-                                                                                            <Text style={ loginStyles.label }>Relationship</Text>
-                                                                                            <UseRelationShipComponent onPress={ onRelationShipSelectTrigger }/>
-                                                                                </View>  
+                                                                            
                                                                 </View>
                                                                 <View style={[styles.column]}>
                                                                         <View>
@@ -209,9 +197,14 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
                                                                                 <CustomSwitch isOn= { true } onChange={ ( status ) =>  onChange(status, 'status') }></CustomSwitch>
                                                                     </View>  
                                                                     <View>
+                                                                                            <Text style={ loginStyles.label }>Relationship</Text>
+                                                                                            <UseRelationShipComponent onPress={ onRelationShipSelectTrigger }/>
+                                                                    </View>  
+                                                                
+                                                                    {/* <View>
                                                                             <Text style={ loginStyles.label }>User:</Text>
                                                                             <UseUserComponent onPress={ onUserSelectTrigger }/>
-                                                                    </View>  
+                                                                    </View>   */}
                                                                 </View>
                                                            
                                                                 
@@ -224,8 +217,6 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
 
               {/** Botones */}
                  <View style={{ flexDirection: 'row',justifyContent:'space-between', marginBottom:0, marginHorizontal:1, bottom:5 }}>
-                 
-
                                             <TouchableOpacity onPress={onClose} style={{ marginTop: 0 }}>
                                                  <Ionicons name="close" size={40} color="red" />
                                             </TouchableOpacity>
@@ -233,10 +224,12 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
                                             <TouchableOpacity onPress={  onRegister1  } style={{ marginTop: 0 }}>
                                                 <Ionicons name="save" size={40} color="green" />
                                             </TouchableOpacity>
-                    </View>
+                 </View>
                 </View>
           </View>
         </>
     )
 }
+
+
 

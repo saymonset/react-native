@@ -31,6 +31,13 @@ export const loginStyles = StyleSheet.create({
         borderBottomWidth: 2,
         paddingBottom: 4
     },
+    inputFieldBirth: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 4,
+        paddingHorizontal: 8,
+      },
     buttonContainer: {
         alignItems: 'center',
         marginTop: 50,

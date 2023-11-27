@@ -7,20 +7,21 @@ export interface Dependentss {
     total:      number;
 }
 
+
 export interface Dependent {
-    _id:             ID;
-    age:             number;
-    birth:           string;
-    email:           string;
-    gender_id:       string;
-    isChildren:      boolean;
-    isUser:          boolean;
-    lastname:        string;
-    name:            string;
-    phone:           string;
-    relationship_id: string;
-    status:          boolean;
-    user_id:         string;
+    _id?:             ID;
+    age?:             number;
+    birth?:           Date;
+    email?:           string;
+    gender_id?:       string;
+    isChildren?:      boolean;
+    isUser?:          boolean;
+    lastname?:        string;
+    name?:            string;
+    phone?:           string;
+    relationship_id?: string;
+    status?:          boolean;
+    user_id?:         string;
    
 }
 

@@ -6,10 +6,14 @@ import {  Register } from '../../../interfaces/register-interfaces';
 import {  useSelector } from 'react-redux';
 
 
-export const registerThunks = ( {...register}:Register ): AnyAction  => {
+export const registerThunks = ( register:Register ): AnyAction  => {
     return async ( dispatch, getState) => {
 
-      const {   token  } = useSelector( (state: store ) => state.loginStore)
+      const { token}  = register;
+   
+
+
+      console.log('pasando por el trunk regstrer create--todo----')
 
       try {
           dispatch( startLoadingRegister());
@@ -51,6 +55,7 @@ export const registerThunks = ( {...register}:Register ): AnyAction  => {
 
  
 export const removeErrorThunks = (dispatch): AnyAction => {
+  console.log('desde removiendo errir create register')
       dispatch(removeMessage());
       return
   };

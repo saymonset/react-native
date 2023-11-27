@@ -34,10 +34,9 @@ export const Navigator = () => {
       
           (status !== 'authenticated')
           ? (<>
-                  
                   <Stack.Screen name="LoginScreen" component={ LoginScreen } />
-                  <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } /> 
-                  <Stack.Screen name="RegisterScreen" component={ RegisterScreen } />
+                  <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
+                  <Stack.Screen name="RegisterScreen" component={ RegisterScreen } /> 
             </>)
           : (<>
                {/** Este HomeScreen es el principa que lama el menu*/}

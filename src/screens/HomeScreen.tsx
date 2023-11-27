@@ -11,6 +11,7 @@ import {  ItemSeparator } from '../components/ItemSeparator';
 import { loginStyles } from '../theme/loginTheme';
 import { useDispatch, useSelector } from 'react-redux';
 import { Background } from '../components/Background';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -20,7 +21,6 @@ export const HomeScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch();
 
   const   onLogout = async () => {
-   
     Keyboard.dismiss();
      await dispatch(logoutThunks());
 }
@@ -30,16 +30,6 @@ export const HomeScreen = ({ navigation }: Props) => {
       {/* Background */} 
       <Background></Background>
               <View style={{flex:1, ...styles.globalMargin}}>
-                  <View style={ loginStyles.buttonContainer }>
-                      <TouchableOpacity
-                                        onPress={ onLogout }
-                                        
-                                        activeOpacity={ 0.8 }
-                                        style={ loginStyles.button }
-                                    >
-                                       <Text style={ [loginStyles.buttonText, loginStyles.buttonTextNewAaccount ] }>Logout</Text>
-                                    </TouchableOpacity>
-                    </View>
                     <FlatList
                     data={ menuItems }
                     renderItem={ ( { item } ) =><FlatListMenuItem menuItem={ item}/>}
@@ -48,6 +38,14 @@ export const HomeScreen = ({ navigation }: Props) => {
                     ItemSeparatorComponent = { () => <ItemSeparator/> }
                     />
                </View>
+                {/** Botones */}
+      <View style={{ flexDirection: 'row',justifyContent:'center', marginBottom:0, marginHorizontal:1, bottom:5 }}>
+          <TouchableOpacity onPress={onLogout} style={{ marginTop: 0 }}>
+              <Ionicons name="log-out-outline" size={40} color="red" />
+          </TouchableOpacity>
+      </View>
+
+              
     </>
    
   )

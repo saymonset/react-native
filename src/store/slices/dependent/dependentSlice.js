@@ -6,6 +6,7 @@ import {  Dependent } from '../../../interfaces/dependent-interfaces';
   const initialState: Dependent = {
     name :'',
     lastname :'',
+    isUser: false,
     email:'',
     phone:'',
     gender_id:'',

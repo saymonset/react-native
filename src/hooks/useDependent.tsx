@@ -11,7 +11,7 @@ import { dependentThunks } from '../store/slices/dependent/dependentThunks.js';
 export const useDependent = () => {
 
     const { name,  lastname,  phone, ci, email, state, city, birth, gender_id, status, onChange } = useForm({
-        name:'', lastname:'', phone:'', ci:'', email:'', state:'', city:'', birth:'', gender_id:'', status:false
+        name:'', lastname:'', phone:'', ci:'', email:'', state:'', city:'', birth: new Date(), gender_id:'', status:true
      });
     const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
     const [selecteRelationShipId, setSelectedRelationShipId] = React.useState("");
