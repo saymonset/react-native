@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { loginStyles } from '../theme/loginTheme';
+import { useSelector } from 'react-redux';
 
 
 interface Props  {
@@ -15,6 +16,7 @@ interface Props  {
 export const CalendarComponent : React.FC<IProps> = ({ date, placeholder, onDateSelection }) => {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(date ? new Date(date) : undefined);
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
+    const { birth } = useSelector( (state: store ) => state.dependentStore);
   
     const showDatePicker = () => {
       setDatePickerVisibility(true);
@@ -29,6 +31,12 @@ export const CalendarComponent : React.FC<IProps> = ({ date, placeholder, onDate
       onDateSelection(date);
       hideDatePicker();
     };
+
+    useEffect(() => {
+      if ( birth ){
+        setSelectedDate(birth);
+      }
+    }, [birth]);
   
     return (
       <View>

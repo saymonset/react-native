@@ -11,7 +11,6 @@ export const useToken = () => {
 
     let renovarToken = async() => {
       if (token){
-        console.log('disparo 2---------'+token);
         await AsyncStorage.setItem('token', token ); 
       }
       return token;

@@ -12,23 +12,23 @@ interface Props {
 
 export const UseRelationShipComponent = ({onPress}:Props) => {
 
+  const { relationship_id } = useSelector( (state: store ) => state.dependentStore);
+
   const [selected, setSelected] = React.useState("");
   const [data,setData] = React.useState([]);
+  const [ selectedByDefault, setSelectedByDefault] = React.useState({
+    key:'',
+    value: ''
+  });
 
   const getObjects = async () => {
     try {
-     
- 
-
       let  {data:{relationships}} = await vaccinesApi.get(`/relationships/20/0`);
-
- 
       setData( relationships.map((obj) => ({
         key: obj._id.$oid,
         value: obj.name ,
         disabled: false
       })));
-
     } catch (error) {
       console.error(error);
     }
@@ -38,7 +38,24 @@ export const UseRelationShipComponent = ({onPress}:Props) => {
 
   useEffect(() => {
     getObjects();
+    setSelectedByDefault({
+      key:'',
+      value:''
+    });
   }, []);
+
+  useEffect(() => {
+    if (data && data.length>0){
+       let obj = data.filter((value)=>{
+        let { key } = value;
+        if ( key === relationship_id)
+        return value;
+       });
+       if (obj && obj.length > 0){
+        setSelectedByDefault(obj[0]);
+       }
+    }
+  }, [relationship_id]);
 
   return  (
          <SelectList
@@ -50,6 +67,7 @@ export const UseRelationShipComponent = ({onPress}:Props) => {
                  data={data} 
                  search={false}
                  placeholder="select relationship"
+                 defaultOption={selectedByDefault} // Set the default value
                  onSelect={() => onPress(selected)} />
 )
 };

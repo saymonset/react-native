@@ -37,14 +37,31 @@ interface Props1  {
 
 export const DependentComponent = ( { onClose, onRegister, width, height }: Props1 ) => {
 
+    
     const dispatch = useDispatch();
-    const { selectedGeneroId, selectedUserId, selecteRelationShipId, name,  lastname,  phone, birth, email, status, onChange,
-        onGeneroSelectTrigger, onUserSelectTrigger, onRelationShipSelectTrigger, onDependent} = useDependent();
+   
 
-        const { isLoading } = useSelector( (state: store ) => state.dependentStore);
+      {/** Estas variables vienen del store */}
+        const { isLoading, name:nameUser,lastname:lastnameUser, phone:phoneUser, email:emailUser, birth:birthUser
+        ,gender_id:gender_idUser, status:statusUser  } = useSelector( (state: store ) => state.dependentStore);
+
+
+        {/** Estas variables son para inicializar el formulario */}
+        const inic = {
+                        name:nameUser,
+                        lastname:lastnameUser,
+                        phone:phoneUser,
+                        email:emailUser,
+                        birth:birthUser,
+                        gender_id:gender_idUser,
+                        status:statusUser
+                        }
+        const {name,  lastname,  phone, email,  birth, status, selectedGeneroId, selectedUserId, selecteRelationShipId, onChange,
+            onGeneroSelectTrigger, onUserSelectTrigger, onRelationShipSelectTrigger, onDependent} = useDependent({...inic});
+
+         
    
              const onRegister1 = async() => {
-
                 let gender_id = selectedGeneroId;
                 let user_id =  selectedUserId;
                 let relationship_id =  selecteRelationShipId;

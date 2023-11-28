@@ -6,16 +6,23 @@ import {  registerThunks } from '../store/slices/register'
 
 import { useForm } from './useForm';
 import { Dependent } from '../interfaces';
-import { dependentThunks } from '../store/slices/dependent/dependentThunks.js';
+import { dependentByIdThunks, dependentAddThunks, dependentDeleteThunks } from '../store/slices/dependent/dependentThunks.js';
+import { useDispatch, useSelector } from 'react-redux';
 
-export const useDependent = () => {
 
-    const { name,  lastname,  phone, ci, email, state, city, birth, gender_id, status, onChange } = useForm({
-        name:'', lastname:'', phone:'', ci:'', email:'', state:'', city:'', birth: new Date(), gender_id:'', status:true
-     });
+export const useDependent = ({...iniForm}:Dependent) => {
+ 
+ 
+    //
+    const { name,  lastname,  phone, email,  birth, gender_id, status , onChange } = useForm({...iniForm});
+
+
+
     const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
     const [selecteRelationShipId, setSelectedRelationShipId] = React.useState("");
     const [selectedUserId, setSelectedUserId] = React.useState("");
+
+    const dispatch = useDispatch();
 
     {/**   datos de la tabla  */}
 
@@ -36,44 +43,21 @@ export const useDependent = () => {
     },
   ]);
 
-  const addRow = () => {
-    const newRow = {
-      name: 'John',
-      lastname: 'Doe',
-      email: 'johndoe@gmail.com',
-      phone: '1234567890',
-      gender_id: '1234567890',
-      birth: '1990-01-01T08:00:00.000',
-      user_id: '1234567890',
-      relationship_id: '1234567890',
-      status: true,
-    };
-
-    setTableData([...tableData, newRow]);
+  const addRow =async(token: string, showModal:(value:boolean)=>void) => {
+    await dispatch(dependentAddThunks( token ));
+    showModal(true);
   };
 
-  const deleteRow = (index) => {
-    const newData = [...tableData];
-    newData.splice(index, 1);
-    setTableData(newData);
+  const deleteRow = async(id:string, token:stringx) => {
+    await dispatch(dependentDeleteThunks( id, token ));
+    // const newData = [...tableData];
+    // newData.splice(index, 1);
+    // setTableData(newData);
   };
 
-  const updateRow = (index) => {
-    const updatedRow = {
-      name: 'Updated',
-      lastname: 'Row',
-      email: 'updatedrow@gmail.com',
-      phone: '0987654321',
-      gender_id: '0987654321',
-      birth: '2000-01-01T08:00:00.000',
-      user_id: '0987654321',
-      relationship_id: '0987654321',
-      status: false,
-    };
-
-    const newData = [...tableData];
-    newData[index] = updatedRow;
-    setTableData(newData);
+  const updateRow = async(id:string, token:string, showModal:(value:boolean)=>void) => {
+    await dispatch(dependentByIdThunks( id, token ));
+    showModal(true);
   };
 
    
@@ -108,10 +92,7 @@ export const useDependent = () => {
          name,  
          lastname,  
          phone,      
-         ci, 
          email, 
-         state, 
-         city, 
          birth, 
          gender_id, 
          status, 
@@ -121,6 +102,7 @@ export const useDependent = () => {
          selectedUserId,
          tableData,
          updateRow,
+         addRow,
          deleteRow,
          setIsVisible,
          isVisible

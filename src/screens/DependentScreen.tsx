@@ -22,8 +22,11 @@ export const DependentScreen = () => {
 
     const navigation = useNavigation();
 
-    const {  setIsVisible, isVisible, updateRow, deleteRow   } = useDependent();
-    const { message, resp, tableData, total, limite, desde, currentPage, isLoading } = useSelector( (state: store ) => state.dependentStore);
+    const iniForm =  {name:'', lastname:'', phone:'', email:'', birth: new Date(), gender_id:'', status:true}
+
+    const {  setIsVisible, isVisible, updateRow, deleteRow, addRow   } = useDependent({...iniForm});
+    const { token } = useSelector( (state: store ) => state.loginStore);
+    const { message, resp, tableData, total, limite, desde, currentPage, isLoading, isDelete } = useSelector( (state: store ) => state.dependentStore);
 
     //const {page, whereGo } = UseHandlerPag(currentPage==0? currentPage + 1:currentPage);
     
@@ -31,18 +34,24 @@ export const DependentScreen = () => {
     const dispatch = useDispatch();
 
 
+    const showModal = (value:boolean) =>{
+      setIsVisible(value)
+    }
 
   const onRegister = async() => {
-        
-        
         Keyboard.dismiss();
-      
-        //  onDependent();
-        //Ci..10169949
-  }
+     }
 
   const   onBack = async () => {
      Keyboard.dismiss();
+     let limiteDesde ={
+      limite,
+      desde:0
+    }
+    let prev: NextPrevioPage ={
+      nextPage:'none'
+    }
+    loadData(limiteDesde, prev)
      navigation.navigate( 'HomeScreen' as never)
 }
 
@@ -52,7 +61,7 @@ export const DependentScreen = () => {
 
  {/** LLenar data */}
 const loadData = async(limiteDesde: DesdeLimite, nextPrev: NextPrevioPage) => {
-    await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev ));
+    await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token ));
 }
 
  
@@ -90,6 +99,24 @@ const handleNextPage  = () => {
     loadData(limiteDesde, none)
   }, [ ])
 
+  useEffect(() => {
+    if (!isDelete) return;
+    
+   
+    let limiteDesde ={
+         limite,
+         desde
+    }
+    let none: NextPrevioPage ={
+      nextPage:'none'
+    }
+    loadData(limiteDesde, none);
+    onClearError();
+    
+ 
+  }, [ isDelete ])
+  
+
 
   useEffect(() => {
     if( message.length === 0 ) return;
@@ -123,35 +150,52 @@ const handleNextPage  = () => {
 
     
      <View style={{ marginHorizontal: 20, marginVertical: 60 }}>
-          <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-            <Row
-              data={['Name', 'Lastname', 'Email', 'Phone', 'Actions']}
-              style={[{ backgroundColor: '#585858'}]}
-              textStyle={{ margin: 6, color: 'white' }}
-            />
-            {tableData && tableData.map((rowData, index) => (
-              <Row
-                key={index}
-                data={[
-                  rowData.name ,
-                  rowData.lastname,
-                  rowData.email,
-                  rowData.phone,
-                  <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => updateRow(index)} style={{ marginRight: 10 }}>
-                      <Ionicons name="pencil" size={20} color="black" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => deleteRow(index)}>
-                      <Ionicons name="trash" size={20} color="red" />
-                    </TouchableOpacity>
-                  </View>,
-                ]}
-                style={[{ backgroundColor: rowData.isUser ? 'gray' : 'white'}]}
-                textStyle={{ margin: 6 ,  color: '#000000' }}
-              />
-            ))}
-          </Table>
-          {   ( isLoading ) && <LoadingScreen /> }          
+          
+          {/* {   ( isLoading ) && <LoadingScreen /> }        */}
+
+          {tableData ? (
+                <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+                                          <Row
+                                            data={['Name', 'Lastname', 'Email', 'Phone', 'Actions']}
+                                            style={[{ backgroundColor: '#585858'}]}
+                                            textStyle={{ margin: 6, color: 'white' }}
+                                          />
+                                          {tableData && tableData.map((rowData, index) => (
+                                            <Row
+                                              key={index}
+                                              data={[
+                                                rowData.name ,
+                                                rowData.lastname,
+                                                rowData.email,
+                                                rowData.phone,
+                                                <View style={{ flexDirection: 'row' }}>
+                                                  <TouchableOpacity onPress={
+                                                              () => {
+                                                                updateRow(rowData._id.$oid, token, showModal);
+                                                              
+                                                              }
+                                                    }  style={{ marginRight: 10 }}>
+                                                    <Ionicons name="pencil" size={20} color="black" />
+                                                  </TouchableOpacity>
+                                                  <TouchableOpacity onPress={
+                                                                    () => {
+                                                                      deleteRow(rowData._id.$oid, token)
+                                                                    }
+                                                                    }>
+                                                            {rowData.isUser ? <></>:<Ionicons name="trash" size={20} color="red" />} 
+                                                  </TouchableOpacity>
+                                                </View>,
+                                              ]}
+                                              style={[{ backgroundColor: rowData.isUser ? 'white' : 'white' }]}
+                                              textStyle={{ margin: 6 ,  color: rowData.isUser ? 'gray' : '#000000' }}
+                                            />
+                                ))}
+              </Table>
+              ) : (
+                <View>
+                  <LoadingScreen />
+                </View>
+              )}   
           {/* Controles del paginador */}
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20 }}>
         <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
@@ -160,7 +204,11 @@ const handleNextPage  = () => {
       </View>
 
       {/* totalPages */}
-          <TouchableOpacity onPress={() => setIsVisible(true)} style={{ marginTop: 10 }}>
+
+      <TouchableOpacity onPress={() => {
+                                                                addRow(token, showModal);
+                                                              }
+                                                    }  style={{ marginRight: 10 }}>
             <Ionicons name="add" size={20} color="white" />
           </TouchableOpacity>
 
@@ -172,7 +220,7 @@ const handleNextPage  = () => {
         </View>
    
         
-        <View style={{ flexDirection: 'row',justifyContent:'center', marginBottom:0, marginHorizontal:1, top:600 }}>
+        <View style={{ flexDirection: 'row',justifyContent:'center', marginBottom:0, marginHorizontal:1, top:( Platform.OS === 'ios') ? 230: 570 }}>
           <TouchableOpacity onPress={() => { onBack() }} style={{ marginTop: 0 }}>
               <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
           </TouchableOpacity>

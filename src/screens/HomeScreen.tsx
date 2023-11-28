@@ -41,7 +41,7 @@ export const HomeScreen = ({ navigation }: Props) => {
                 {/** Botones */}
       <View style={{ flexDirection: 'row',justifyContent:'center', marginBottom:0, marginHorizontal:1, bottom:5 }}>
           <TouchableOpacity onPress={onLogout} style={{ marginTop: 0 }}>
-              <Ionicons name="log-out-outline" size={40} color="red" />
+              <Ionicons name="chevron-back-outline" size={40} color="black" />
           </TouchableOpacity>
       </View>
 

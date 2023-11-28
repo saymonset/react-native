@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
-import {   startLoadingDependent, setDependentResponse, addMessage, removeMessage, loadDataDependent   } from './dependentSlice'
+import {   startLoadingDependent, setDependentResponse, addMessage, removeMessage, loadDataDependent, setDependentById, setDependentDelete  } from './dependentSlice'
  import { Dependent, Dependentss, DesdeLimite, NextPrevioPage } from '../../../interfaces';
  import { UseHandlerPag } from '../../../hooks/useHandlerPag';
 
@@ -30,6 +30,61 @@ export const dependentThunks = ( {...dependent}:Dependent ): AnyAction  => {
     }
 }
 
+export const dependentByIdThunks = ( id:String, token: String ): AnyAction  => {
+  return async ( dispatch, getState) => {
+    try {
+      if (token) {
+        await AsyncStorage.setItem('token', token ); 
+      }
+       // dispatch( startLoadingDependent());
+        const {data} = await vaccinesApi.get(`/dependent/${ id }`);
+        const {result} = data;
+        const payload = result;
+         dispatch( setDependentById(payload) );
+       
+    } catch (error) {
+         dispatch( addMessage("Error: "+error))
+    }
+  }
+}
+
+export const dependentDeleteThunks = ( id:String, token: String ): AnyAction  => {
+  return async ( dispatch, getState) => {
+    try {
+      if (token) {
+        await AsyncStorage.setItem('token', token ); 
+      }
+        dispatch( startLoadingDependent());
+        console.log('------------1----------------delete----------')
+        const {data} = await vaccinesApi.delete(`/dependent/${ id }`);
+        console.log(`/dependent/${ id }`)
+      
+        const payload = data;
+        console.log({payload})
+        console.log('------------2--------------------------')
+         dispatch( setDependentDelete(payload) );
+       
+    } catch (error) {
+         dispatch( addMessage("Error: "+error))
+    }
+  }
+}
+
+export const dependentAddThunks = ( token: String ): AnyAction  => {
+  return async ( dispatch, getState) => {
+    try {
+      if (token) {
+        await AsyncStorage.setItem('token', token ); 
+      }
+        const payload = { name:'', lastname:'', phone:'',  email:'',  birth: new Date().toISOString(), gender_id:'',
+        relationship_id:'', status:true}
+        dispatch( setDependentById(payload) );
+       
+    } catch (error) {
+         dispatch( addMessage("Error: "+error))
+    }
+  }
+}
 
 const handlePreviousPage =  (total, currentPage) => {
   if (currentPage > 1) {
@@ -68,14 +123,23 @@ const whereGo =   (nextPrevioPage, total, currentPage) => {
      return currentPage;
 }
 
-export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextPrev): AnyAction  => {
+export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextPrev, token): AnyAction  => {
   return async ( dispatch, getState) => {
     try {
-    
+     if (token) {
+       await AsyncStorage.setItem('token', token ); 
+     }
+     
       dispatch( startLoadingDependent());
       const { desde, limite } = desdeLimite;
+     
       const {data} = await vaccinesApi.get(`/dependent/${limite}/${desde}`);
-      const { dependents, total } = data;
+     
+      const { dependents, total, error } = data;
+      if (error) {
+        dispatch( addMessage("Error: "+JSON.stringify(error)))
+        return 
+      }
       currentPage = whereGo (nextPrev, total, currentPage);
       const payload: Dependentss = {
         dependents,
@@ -85,7 +149,7 @@ export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextP
         currentPage,
         total
       };
-
+    
       dispatch( loadDataDependent(payload) );
     } catch (error) {
          dispatch( addMessage("Error: "+error))
