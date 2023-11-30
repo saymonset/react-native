@@ -26,7 +26,9 @@ import {  Dependent } from '../../../interfaces/dependent-interfaces';
     limite:     2,
     total:      0,
     currentPage:0,
-    isDelete: false
+    isDelete: false,
+    edit: false
+
   };
 
 export const dependentSlice = createSlice({
@@ -44,13 +46,14 @@ export const dependentSlice = createSlice({
             state.isLoading = false;
         },
         setDependentById: ( state, { payload } ) => {
+            state._id = payload._id
             state.name = payload.name;
             state.lastname = payload.lastname;
             state.phone = payload.phone;
             state.email = payload.email;
             state.birth = payload.birth;
             state.gender_id = payload.gender_id;
-           // console.log({ payload })
+            state.edit  = true
             state.relationship_id = payload.relationship_id;
         },
         setDependentDelete: ( state, { payload } ) => {
@@ -61,9 +64,10 @@ export const dependentSlice = createSlice({
             state.birth = '';
             state.gender_id ='';
             state.relationship_id = '';
-            message = payload
+            state.message = payload
             state.isLoading = false;
             state.isDelete = true;
+            
         },
         loadDataDependent: ( state, { payload } ) => {
             state.tableData = payload.dependents;

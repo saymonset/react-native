@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect } from 'react';
 import { View, Platform, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import vaccinesApi from '../api/vaccinesApi';
 import {  useSelector } from 'react-redux';
+import { AuthContext } from '../context/AuthContext';
 
 interface Props {
     onPress: (value:string)=> void;
@@ -12,6 +13,7 @@ interface Props {
 
 export const UseRelationShipComponent = ({onPress}:Props) => {
 
+  const { authState:{relationships} } = useContext(AuthContext)
   const { relationship_id } = useSelector( (state: store ) => state.dependentStore);
 
   const [selected, setSelected] = React.useState("");
@@ -23,12 +25,7 @@ export const UseRelationShipComponent = ({onPress}:Props) => {
 
   const getObjects = async () => {
     try {
-      let  {data:{relationships}} = await vaccinesApi.get(`/relationships/20/0`);
-      setData( relationships.map((obj) => ({
-        key: obj._id.$oid,
-        value: obj.name ,
-        disabled: false
-      })));
+      setData(relationships as never);
     } catch (error) {
       console.error(error);
     }

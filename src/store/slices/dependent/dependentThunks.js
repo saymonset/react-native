@@ -6,12 +6,32 @@ import {   startLoadingDependent, setDependentResponse, addMessage, removeMessag
  import { UseHandlerPag } from '../../../hooks/useHandlerPag';
 
 
-export const dependentThunks = ( {...dependent}:Dependent ): AnyAction  => {
+export const dependentThunks = ( dependent:Dependent, token: String, loginResponse: LoginResponse ): AnyAction  => {
     return async ( dispatch, getState) => {
       try {
+        if (token) {
+          await AsyncStorage.setItem('token', token ); 
+        }
           dispatch( startLoadingDependent());
-          const {data} = await vaccinesApi.post(`/dependent`, {...dependent});
+          let data0 =  {};
+          const {_id} = dependent;
+          let { usuario } = loginResponse;
+          let {_id:{$oid}} = usuario;
+          dependent['user_id']=$oid;
+
+         //console.log({$oid})
+          if(_id){
+            const { _id, ...resto } = dependent;
+            dependent = Object.assign({}, resto);
+            console.log({...dependent})
+            data0 = await vaccinesApi.put(`/dependent/${_id}`, {...dependent});
+          }else{
+            data0 = await vaccinesApi.post(`/dependent/p`, {...dependent});
+          }
+          const {data} = data0;
           const { statusCode, message, resp, } = data;
+
+          console.log({data})
 
           if (statusCode == 401 || !resp) {
               dispatch( addMessage("Error: "+JSON.stringify(data)))
@@ -36,10 +56,10 @@ export const dependentByIdThunks = ( id:String, token: String ): AnyAction  => {
       if (token) {
         await AsyncStorage.setItem('token', token ); 
       }
-       // dispatch( startLoadingDependent());
         const {data} = await vaccinesApi.get(`/dependent/${ id }`);
         const {result} = data;
         const payload = result;
+              payload._id = id
          dispatch( setDependentById(payload) );
        
     } catch (error) {
@@ -55,13 +75,8 @@ export const dependentDeleteThunks = ( id:String, token: String ): AnyAction  =>
         await AsyncStorage.setItem('token', token ); 
       }
         dispatch( startLoadingDependent());
-        console.log('------------1----------------delete----------')
         const {data} = await vaccinesApi.delete(`/dependent/${ id }`);
-        console.log(`/dependent/${ id }`)
-      
         const payload = data;
-        console.log({payload})
-        console.log('------------2--------------------------')
          dispatch( setDependentDelete(payload) );
        
     } catch (error) {

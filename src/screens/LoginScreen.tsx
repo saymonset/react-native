@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,12 +9,15 @@ import { WhiteLogo } from '../components/WhiteLogo';
 import { loginStyles } from '../theme/loginTheme';
 import { loginThunks, removeErrorThunks } from '../store/slices/login/loginThunks'
 import { LoadingScreen } from './LoadingScreen';
+import { AuthContext } from '../context/AuthContext';
 
 
 interface Props extends StackScreenProps<any, any> {}
 
 
 export const LoginScreen = ({ navigation }: Props) => {
+
+    const { genderLoad, relationshipLoad} = useContext(AuthContext)
 
       {/* REDUX TOOLKIT */}
       
@@ -43,6 +46,9 @@ useEffect(() => {
   const onLogin = async () => {
     Keyboard.dismiss();
     await dispatch(loginThunks( email, password));
+      // Cargamos el contexto global 
+      genderLoad();
+      relationshipLoad();
 }
  
   return (

@@ -23,6 +23,7 @@ import { dependentThunks, removeErrorThunks} from '../store/slices/dependent/dep
 import { useNavigation } from '@react-navigation/native';
 import { CalendarComponent } from './CalendarComponent'
 import DatePicker from '@react-native-community/datetimepicker';
+import { AuthContext } from '../context/AuthContext';
  
 
 interface Props extends StackScreenProps<any,any>{}
@@ -36,6 +37,8 @@ interface Props1  {
 }
 
 export const DependentComponent = ( { onClose, onRegister, width, height }: Props1 ) => {
+    
+   
 
     
     const dispatch = useDispatch();
@@ -43,7 +46,8 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
 
       {/** Estas variables vienen del store */}
         const { isLoading, name:nameUser,lastname:lastnameUser, phone:phoneUser, email:emailUser, birth:birthUser
-        ,gender_id:gender_idUser, status:statusUser  } = useSelector( (state: store ) => state.dependentStore);
+        ,gender_id:gender_idUser, status:statusUser, edit, _id  } = useSelector( (state: store ) => state.dependentStore);
+        const { token, loginResponse } = useSelector( (state: store ) => state.loginStore);
 
 
         {/** Estas variables son para inicializar el formulario */}
@@ -66,6 +70,7 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
                 let user_id =  selectedUserId;
                 let relationship_id =  selecteRelationShipId;
                 let insertDependent = {
+                    _id,
                     name,
                     lastname,
                     email,
@@ -76,7 +81,7 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
                     relationship_id,
                     status 
                   };
-                await dispatch(dependentThunks( insertDependent));
+                await dispatch(dependentThunks( insertDependent, token, loginResponse));
                 return onRegister();
 
              }

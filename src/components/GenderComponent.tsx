@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect } from 'react';
 import { View, Platform, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useSelector } from 'react-redux';
 import vaccinesApi from '../api/vaccinesApi';
+import { AuthContext } from '../context/AuthContext';
  
  
 
@@ -14,6 +15,7 @@ interface Props {
 
 export const UseGenderComponent = ({ onPress}:Props) => {
 
+  const { authState:{genders} } = useContext(AuthContext)
   const { gender_id } = useSelector( (state: store ) => state.dependentStore);
 
   
@@ -30,12 +32,7 @@ export const UseGenderComponent = ({ onPress}:Props) => {
 
   const getGenders = async () => {
     try {
-      let  {data:{genders}} = await vaccinesApi.get(`/genders/20/0`);
-      setData( genders.map((gender) => ({
-        key: gender._id.$oid,
-        value: gender.name,
-        disabled: false
-      })));
+      setData( genders as never);
     } catch (error) {
       console.error(error);
     }

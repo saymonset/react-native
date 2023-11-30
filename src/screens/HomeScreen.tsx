@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StackScreenProps } from '@react-navigation/stack';
 import { Text, View, FlatList, TouchableOpacity, Keyboard } from 'react-native';
 
@@ -12,6 +12,7 @@ import { loginStyles } from '../theme/loginTheme';
 import { useDispatch, useSelector } from 'react-redux';
 import { Background } from '../components/Background';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { AuthContext } from '../context/AuthContext';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -24,6 +25,8 @@ export const HomeScreen = ({ navigation }: Props) => {
     Keyboard.dismiss();
      await dispatch(logoutThunks());
 }
+
+ 
 
   return (
     <>

@@ -99,22 +99,7 @@ const handleNextPage  = () => {
     loadData(limiteDesde, none)
   }, [ ])
 
-  useEffect(() => {
-    if (!isDelete) return;
-    
-   
-    let limiteDesde ={
-         limite,
-         desde
-    }
-    let none: NextPrevioPage ={
-      nextPage:'none'
-    }
-    loadData(limiteDesde, none);
-    onClearError();
-    
- 
-  }, [ isDelete ])
+
   
 
 
@@ -127,7 +112,7 @@ const handleNextPage  = () => {
     }]);
 
     {/** Ocultamos el modal */}
-    if (resp){
+    if (resp || isDelete){
        setIsVisible(false);
           let limiteDesde ={
             limite,

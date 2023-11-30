@@ -10,6 +10,8 @@ import {  LoginState } from '../../../interfaces'
 export const loginThunks = ( email, password ): AnyAction  => {
     return async ( dispatch, getState) => {
 
+  
+
       try {
         //  dispatch( removeError())
           dispatch( startLoadingLogin())
@@ -36,9 +38,11 @@ export const loginThunks = ( email, password ): AnyAction  => {
               message: '',
               loginResponse: data,
             };
-          
-         
           dispatch( setLoginResponse(payload) );
+
+        
+
+          
       } catch (error) {
            dispatch( addError("Error: "+error))
       }
