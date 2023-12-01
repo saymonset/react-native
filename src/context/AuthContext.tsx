@@ -1,9 +1,10 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useState } from 'react';
 import { authReducer } from './authReducer';
 import { Gender, GenderElement } from '../interfaces/gender-interfaces';
 import vaccinesApi from '../api/vaccinesApi';
 import { selectOption } from '../interfaces/select-option-interface';
-import { RelationShipRequest } from '../interfaces/relationship-interfaces';
+import { Relationship, RelationShipResponse } from '../interfaces/relationship-interfaces';
+ 
 
 // Definir como luce, que informacion tendre aqui
 export interface AuthState  {
@@ -27,6 +28,7 @@ export interface  AuthContextProps {
      signIn: () => void;
      genderLoad: () => void;
      relationshipLoad: () => void;
+     getGeneroRaltionSchipLoads :  () => void;
 }
 
 
@@ -34,7 +36,6 @@ export interface  AuthContextProps {
 export const AuthContext = createContext( {} as AuthContextProps );
 
 //  Componente proveedor del estado
-//export const AuthProvider = ( { children }: { children: JSX.Element[]} ) => {
 export const AuthProvider = ( { children }:  any ) => {
    
     const [authState, dispatch] = useReducer(authReducer, authInitialState);
@@ -43,9 +44,17 @@ export const AuthProvider = ( { children }:  any ) => {
         dispatch( { type:'signIn'})
     }
 
-    const genderLoad = async() => {
+    const getGeneroRaltionSchipLoads = async() => {
+        let  datagenders =  vaccinesApi.get<Gender>(`/genders/20/0`);
+        let  datarelationships =  vaccinesApi.get<RelationShipResponse>(`/relationships/20/0`);
+        const [ gendersResp, relationshipsResp ] = await Promise.all([ datagenders, datarelationships ]);
+ 
+        genderLoad(gendersResp.data.genders);
+        relationshipLoad(relationshipsResp.data.relationships);
+    }
+
+    const genderLoad = async(genders: GenderElement[] = []) => {
         try {
-            let  {data:{genders}} = await vaccinesApi.get<Gender>(`/genders/20/0`);
             let selections: selectOption[] =( genders.map((gender) => ({
                 key: gender._id.$oid,
                 value: gender.name,
@@ -60,11 +69,9 @@ export const AuthProvider = ( { children }:  any ) => {
         }
     }
 
-    const relationshipLoad = async() => {
+    const relationshipLoad = async(  relationShips: Relationship[] = [] ) => {
         try {
-            // let  {data:{relationships}} = await vaccinesApi.get(`/relationships/20/0`);
-            let  {data:{relationships}} = await vaccinesApi.get<RelationShipRequest>(`/relationships/20/0`);
-            let selections: selectOption[] =( relationships.map((obj) => ({
+            let selections: selectOption[] =( relationShips.map((obj) => ({
                 key: obj._id.$oid,
                 value: obj.name,
                 disabled: false
@@ -83,7 +90,8 @@ export const AuthProvider = ( { children }:  any ) => {
             authState,
             signIn,
             genderLoad,
-            relationshipLoad
+            relationshipLoad,
+            getGeneroRaltionSchipLoads
           }}>
                 { children }
           </AuthContext.Provider>

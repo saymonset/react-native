@@ -53,34 +53,10 @@ export const menuItems: MenuItem[] = [
     //     icon: 'log-in-outline',
     //     component: 'LoginScreen'
     // },
+    
     {
         name: 'TODO!',
-        icon: '',
-        component: 'RegisterScreen'
-    },
-    {
-        name: 'TODO!',
-        icon: '',
-        component: 'RegisterScreen'
-    },
-    {
-        name: 'TODO!',
-        icon: '',
-        component: 'RegisterScreen'
-    },
-    {
-        name: 'TODO!',
-        icon: '',
-        component: 'RegisterScreen'
-    },
-    {
-        name: 'TODO!',
-        icon: '',
-        component: 'RegisterScreen'
-    },
-    {
-        name: 'TODO!',
-        icon: '',
+        icon: 'accessibility-outline',
         component: 'RegisterScreen'
     },
     {
