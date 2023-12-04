@@ -6,6 +6,7 @@ import { Navigator } from './src/navigator/navigator';
 import { Provider } from 'react-redux';
 import { store } from './src/store/store';
 import { AuthProvider } from './src/context/AuthContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 
@@ -20,13 +21,13 @@ const AppState = ({ children }: any ) => {
  const App = () => {
   return (
     <NavigationContainer>
-    <AppState>
-       <Provider store={ store}>
-       
-          <Navigator></Navigator>
-           
-       </Provider>
-       </AppState>
+        <AppState>
+          <Provider store={ store}>
+          
+              <Navigator></Navigator>
+              
+          </Provider>
+        </AppState>
     </NavigationContainer>
   )
 }

@@ -13,6 +13,11 @@ import { RegisterScreen } from '../screens/RegisterScreen';
 import {  store } from '../store'
 import { SendSmsScreen } from '../screens/SendSmsScreen';
 import { DependentScreen } from '../screens/DependentScreen';
+import { WelcomeScreen } from '../screens/WelcomeFigmaScreen';
+import { SendPhoneFigmaScreen } from '../screens/SendPhoneFigmaScreen';
+import { SendCodeFigmaScreen } from '../screens/SendCodeFigmaScreen';
+import { SeguridadFigmaScreen } from '../screens/SeguridadFigmaScreen';
+import { RegistrodatosFigmaScreen } from '../screens/RegistrodatosFigmaScreen';
 
 
 const Stack = createStackNavigator();
@@ -34,6 +39,11 @@ export const Navigator = () => {
       
           (status !== 'authenticated')
           ? (<>
+                  <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } />
+                  <Stack.Screen name="SeguridadFigmaScreen" component={ SeguridadFigmaScreen } />
+                  <Stack.Screen name="SendCodeFigmaScreen" component={ SendCodeFigmaScreen } />
+                  <Stack.Screen name="SendPhoneFigmaScreen" component={ SendPhoneFigmaScreen } />
+                  <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } />
                   <Stack.Screen name="LoginScreen" component={ LoginScreen } />
                   <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
                   <Stack.Screen name="RegisterScreen" component={ RegisterScreen } /> 

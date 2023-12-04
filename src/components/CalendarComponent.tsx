@@ -44,10 +44,10 @@ export const CalendarComponent : React.FC<IProps> = ({ date, placeholder, onDate
                                              <Text
                                                 style={[ 
                                                     loginStyles.inputField,
-                                                    ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS,{marginTop:5}
+                                                    ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS,{marginTop:0}
                                                 ]}
                                                 >{selectedDate ? moment(selectedDate).format('YYYY-MM-DD') : placeholder}</Text>
-                                                <Ionicons name="calendar-outline" size={40} color="green" />
+                                                <Ionicons name="calendar-outline" size={40} color="black" />
                                             </TouchableOpacity>
         
         <DateTimePickerModal

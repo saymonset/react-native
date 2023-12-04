@@ -205,7 +205,7 @@ const handleNextPage  = () => {
         </View>
    
         
-        <View style={{ flexDirection: 'row',justifyContent:'center', marginBottom:0, marginHorizontal:1, top:( Platform.OS === 'ios') ? 230: 570 }}>
+      <View style={{ flexDirection: 'row',justifyContent:'center', marginBottom:0, marginHorizontal:1, top:( Platform.OS === 'ios') ? 230: 570 }}>
           <TouchableOpacity onPress={() => { onBack() }} style={{ marginTop: 0 }}>
               <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
           </TouchableOpacity>
