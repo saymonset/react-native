@@ -1,4 +1,4 @@
-import React, {  useState, useContext, useEffect} from 'react';
+import React, {  useState, useContext, useEffect, useRef} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard , Alert} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -21,6 +21,7 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
    
   const [ inputValue, setInputValue ] = useState('');
   const [ codValue, setCodValue ] = useState('');
+  const inputRef = useRef(null);
   const { isLoading } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
 
@@ -35,6 +36,9 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
 
   const onCodInputChange = (value) => {
     setCodValue( value );
+    if (value.length === 3) {
+        inputRef.current.focus(); // Salta al campo inputValue
+      }
 }
 
   const onSubmit = async( event ) => {
@@ -43,7 +47,8 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
       if( codValue.trim().length <= 1) return;
       if( inputValue.trim().length <= 1) return;
       console.log(codValue+inputValue);
-      await dispatch(sendSmsThunks( inputValue.trim() ));
+      let phone = codValue.trim()+inputValue.trim()
+      await dispatch(sendSmsThunks( phone ));
       setInputValue('');
       setCodValue( '' );
   }
@@ -72,12 +77,13 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
                                                             onSubmitEditing={ onSubmit }
                                                             autoCapitalize="none"
                                                             autoCorrect={ false }
-                                                            maxLength={4} // Limita la entrada a tres caracteres
+                                                            maxLength={3} // Limita la entrada a tres caracteres
                                                             />
                         </View>
                 
                         <View style={{flex:2, right: ( Platform.OS === 'ios' )?60:90, marginBottom:0}}>
                                 <TextInput 
+                                                            ref={inputRef} // Referencia al campo inputValue
                                                             placeholder="Número de télefono"
                                                             placeholderTextColor="rgba(0,0,0,0.4)"
                                                             underlineColorAndroid="rgba(0,0,0,0.4)"
@@ -100,7 +106,7 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
                   <View style={{flex:1}}>
                         <HeaderTitleFigma title="Al continuar acepta nuestra Politica de Privacidad y
                                 acepta que ha leído nuestros Términos y condiciones de Uso." 
-                                                                                    marginTop={(Platform.OS === 'ios') ? 0: -40}
+                                                                                    marginTop={(Platform.OS === 'ios') ? -40: -40}
                                                                                     marginBottom={(Platform.OS === 'ios') ? 50: 0}
                                                                                     stylesFigma={stylesFigma}
                                                                                     type='small'

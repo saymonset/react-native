@@ -20,24 +20,11 @@ interface Props extends StackScreenProps<any, any> {}
 export const SeguridadFigmaScreen = ({ navigation }: Props) => {
 
   const [isVisible, setIsVisible] = useState(false);
-  const [ inputValue, setInputValue ] = useState('');
-  const onInputChange = (value:any) => {
-    setInputValue( value );
-}
     
   const   onBack = async () => {
         Keyboard.dismiss();
-       
+        navigation.replace('SendCodeFigmaScreen')
     }
-
-    const onSubmit = async( event:any ) => {
-      Keyboard.dismiss();
-      event.preventDefault();
-      if( inputValue.trim().length <= 1) return;
-
-     // await dispatch(sendSmsThunks( inputValue.trim() ));
-      setInputValue('');
-  }
 
  
   return (
@@ -45,8 +32,13 @@ export const SeguridadFigmaScreen = ({ navigation }: Props) => {
           {/* Background */} 
            <BackgroundSendPhoneFigma></BackgroundSendPhoneFigma>
 
-            <View style={{ flexDirection: 'row',justifyContent:'left', marginBottom:0, marginLeft:15,  marginHorizontal:1, top:( Platform.OS === 'ios') ? 30: 30 }}>
-                <TouchableOpacity onPress={() => { onBack() }} style={{ marginTop: 0 }}>
+           <View style={{ flexDirection: 'row',
+                           justifyContent:'flex-start',
+                           marginBottom:0, 
+                           marginLeft:15,  
+                           marginHorizontal:1, 
+                           marginTop:( Platform.OS === 'ios') ? 30: 30 }}>
+                <TouchableOpacity onPress={() => onBack() } style={{ marginTop: 0 }}>
                     <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
                 </TouchableOpacity>
             </View>

@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { registerThunks } from '../store/slices/register';
 import { UseGenderComponent } from './GenderComponent';
 import { CustomSwitch } from './CustomSwitch';
-import { CalendarComponent } from './CalendarComponent';
+import { CalendarFigmaComponent } from './CalendarFigmaComponent';
 
 interface Props1  {
     onLogin: () => void;
@@ -22,10 +22,10 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
 
   const [selected, setSelected] = React.useState("");
   const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
-  const onSelectTrigger = (value:string) => {
-      console.log(`Disparado desde el padre: ${value}`);
+  const onSelectTrigger = (value ) => {
       setSelectedGeneroId(value);
   }
+  const { isLoading, message, resp, password:paswordFromSecurity } = useSelector( (state: store ) => state.registerStore);
   const { token, phone } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
   const { name,  lastname,  password, ci, email, state, city, birth, gender_id, status, onChange } = useForm({
@@ -41,7 +41,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
     let obj = {
        name,
        lastname,
-       password,
+       password:paswordFromSecurity,
        ci,
        email,
        state,
@@ -173,7 +173,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                         </View>
                                         <View style = {{ marginVertical:20}}>
                                                     <Text style={ comunStylesFigma.label }>Fecha de nacimiento:</Text>
-                                                    <CalendarComponent onDateSelection= {(value) => onDateSelection(value)}/>
+                                                    <CalendarFigmaComponent onDateSelection= {(value) => onDateSelection(value)}/>
                                         </View>
                                        
                                        
@@ -221,27 +221,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                     />
                                         </View>  
 
-                                        <View>
-                                            <Text style={ comunStylesFigma.label }>Password:</Text>
-                                            <TextInput 
-                                                placeholder="******"
-                                                placeholderTextColor="rgba(0,0,0,0.4)"
-                                                underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                secureTextEntry
-                                                style={[ 
-                                                    comunStylesFigma.inputField,
-                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                ]}
-                                                selectionColor="white"
-
-                                                onChangeText={ (value) => onChange(value, 'password') }
-                                                value={ password }
-                                                onSubmitEditing={ onRegister }
-
-                                                autoCapitalize="none"
-                                                autoCorrect={ false }
-                                            />
-                                        </View>
+                                         
                                       
                                     </View>
                                   
@@ -255,15 +235,25 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
  
 
          {/* Crear una nueva cuenta */}
-         <View style={ comunStylesFigma.buttonContainer  }>
-                                            <TouchableOpacity
-                                                style={{...comunStylesFigma.button, marginBottom:20} }
-                                                activeOpacity={ 0.8 }
-                                                onPress={ () => navigation.replace('SendSmsScreen') }
-                                            >
-                                                <Text style={ [comunStylesFigma.buttonText ] }>Inicia sessión</Text>
+         <View style={{...comunStylesFigma.buttonContainer,  alignItems:'center', marginTop:90}  }>
+      
+                                            <TouchableOpacity 
+                                                     onPress= { onRegister} 
+                                                     style={ {...comunStylesFigma.button} }
+                                                    >
+                                                   <Text style={ [comunStylesFigma.buttonText ] }>Siguiente</Text>
                                             </TouchableOpacity>
                                         </View>
+                                        {/* <View style={ {...stylesFigma.buttonContainer, alignItems:'center', marginTop:20} }>
+                                            <TouchableOpacity
+                                                activeOpacity={ 0.8 }
+                                                style={ stylesFigma.button }
+                                                onPress={ onSubmit }
+                                            >
+                                                <Text style={ stylesFigma.buttonText } >Siguiente</Text>
+                                            </TouchableOpacity>
+                                        </View> 
+        */}
       {/** Botones */}
       {/* <View style={{ flexDirection: 'row',justifyContent:'space-between', marginBottom:0, marginHorizontal:1, bottom:5 }}>
 

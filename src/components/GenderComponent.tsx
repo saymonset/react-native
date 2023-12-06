@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
    backgroundColor: 'white',
   },
   text: {
-    color: 'white',
+    color: 'black',
     fontSize: 12,
   },
 });

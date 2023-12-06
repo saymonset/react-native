@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Button, Image, Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,33 +11,58 @@ import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SendCodeFigmaComponent } from '../components/SendCodeFigmaComponent';
-
+import { removeErrorSmsThunks } from '../store/slices/sendSms/sendSmsThunks';
+import {  removeErrorThunks } from '../store/slices/register/index';
 
 interface Props extends StackScreenProps<any, any> {}
 
 
 export const SendCodeFigmaScreen = ({ navigation }: Props) => {
 
+  const {  message, isSendCode , token } = useSelector( (state: store ) => state.sendSmsStore);
+  const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
+
   const onInputChange = (value:any) => {
-    setInputValue( value );
-}
+      setInputValue( value );
+  }
     
   const   onBack = async () => {
         Keyboard.dismiss();
         navigation.replace('SendPhoneFigmaScreen')
-       
     }
 
-    const onSubmit = async( event:any ) => {
-      Keyboard.dismiss();
-      event.preventDefault();
-      if( inputValue.trim().length <= 1) return;
+    const cerrarModal = () => {
+          setIsVisible(false);
+          //Borramos mensajes del thrunk
+          onClearError();
+        
+          // if (isSendCode){
+          //     navigation.replace('SendCodeFigmaScreen');
+          // }
+          if (token){
+              navigation.replace('SeguridadFigmaScreen');
+          }
+    }
 
-     // await dispatch(sendSmsThunks( inputValue.trim() ));
-      setInputValue('');
-  }
+      const abrirModal = () => {
+        setIsVisible(true);
+      }
+
+
+
+      const   onClearError = async () => {
+            await removeErrorSmsThunks(dispatch);
+            //Borra mensajees de registerScreen
+            await removeErrorThunks(dispatch)
+      } 
+
+      {/* Solo para sacar mensajes de error por pantalla */}
+      useEffect(() => {
+          if( message.length === 0 ) return;
+              abrirModal();
+      }, [ message ])
 
  
   return (
@@ -93,18 +118,7 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
                                               
                                 <SendCodeFigmaComponent navigation = { navigation }></SendCodeFigmaComponent>
                               
-                           <View style={ {flex:1}}> 
-                              {/* Boton login */}
-                              {/* <View style={ {...stylesFigma.numContainer, marginTop:0} }>
-                                  <TouchableOpacity
-                                      activeOpacity={ 0.8 }
-                                      style={ stylesFigma.button }
-                                      onPress={ () => setIsVisible( true )}
-                                  >
-                                      <Text style={ stylesFigma.buttonText } >Siguiente</Text>
-                                  </TouchableOpacity>
-                              </View> */}
-                           </View>
+                           
                              </View>
                              
                           
@@ -151,7 +165,7 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
                     <TouchableOpacity
                                 activeOpacity={ 0.8 }
                                 style={{...stylesFigma.button, alignItems:'center', marginTop:20}}
-                                onPress={() => setIsVisible(false)}
+                                onPress={() => cerrarModal() }
                               >
                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Enviar</Text>
                       </TouchableOpacity>

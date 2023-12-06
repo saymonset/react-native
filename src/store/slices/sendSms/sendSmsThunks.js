@@ -1,10 +1,43 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
-import {   startLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, resetSendSms, checkCode  } from './sendSmsSlice'
+import {   startLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, resetSendSms, checkCode, setPassword  } from './sendSmsSlice'
 
 
+export const reEnviarCodeThunks = ( phone ): AnyAction => {
+  return async ( dispatch, getState) => {
 
+    try {
+      dispatch( startLoadingSms())
+      // TODO: realizar peticion http
+      
+  
+        let response = await vaccinesApi.post('/sendSms', { phone } );
+       
+        let {data} = response;
+       
+       
+        const { resp, message, statusCode} = data; 
+         if (!resp){
+          dispatch( addErrorSms("Error: "+message));
+          return;
+         }
+         const payload = {
+            phone,
+            isLoading: false,
+            token: '',
+            message: 'Success SMS: '+message,
+            response: null,
+            isSendCode: true,
+          };
+        dispatch( setSmsResponse(payload) );
+    } catch (error) {
+         console.log({error});
+         dispatch( addErrorSms("Error: "+error))
+    }
+ 
+  }
+}
 export const sendSmsThunks = (  phone   ): AnyAction  => {
     return async ( dispatch, getState) => {
 
@@ -17,9 +50,7 @@ export const sendSmsThunks = (  phone   ): AnyAction  => {
          
           let {data} = response;
          
-          //  data = {
-          //    resp: true, message:'Boorrar esto mock data', statusCode:'2001'
-          // }
+         
           const { resp, message, statusCode} = data; 
            if (!resp){
             dispatch( addErrorSms("Error: "+message));
@@ -47,9 +78,7 @@ export const sendSmsThunks = (  phone   ): AnyAction  => {
 
 export const checkCodeThunks = (  phone, code   ): AnyAction  => {
   return async ( dispatch, getState) => {
-
     try {
-    
       dispatch( startLoadingSms())
       // TODO: realizar peticion http
         let response = await vaccinesApi.post('/CheckCode', { phone, code } );
@@ -76,9 +105,10 @@ export const checkCodeThunks = (  phone, code   ): AnyAction  => {
       console.log({error});
          dispatch( addErrorSms("Error: "+error))
     }
- 
   }
 }
+
+
 
  
 export const removeErrorSmsThunks = (dispatch) => {

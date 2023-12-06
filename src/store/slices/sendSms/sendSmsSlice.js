@@ -49,7 +49,10 @@ export const sendSmsSlice = createSlice({
             state.isLoading = false;
             state.isSendCode = false;
             state.message = payload.message;
-        }
+        },
+         setPassword: (state,  { payload } ) => {
+            state.password = payload.password;
+        },
     }
 });
 // Action creators are generated for each case reducer function

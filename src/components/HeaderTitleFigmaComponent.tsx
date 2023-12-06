@@ -18,7 +18,7 @@ export const HeaderTitleFigma = ({ title, marginTop=0,marginBottom=20, stylesFig
   const { top } = useSafeAreaInsets();
 
   return (
-    <View style={[{ marginTop, marginBottom}]}>
+    <View style={[{ marginTop, marginBottom, marginHorizontal:20}]}>
        <Text style={[(type === 'big') ? stylesFigma?.title : stylesFigma?.titlesecund,  {textAlign} ]}>{title}</Text>
     </View>
   );

@@ -34,10 +34,22 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
     }
 
     const cerrarModal = () => {
-      setIsVisible(false);
-      //Borramos mensajes del thrunk
-      onClearError();
+          setIsVisible(false);
+          //Borramos mensajes del thrunk
+          onClearError();
+        
+          if (isSendCode){
+            navigation.replace('SendCodeFigmaScreen');
+          }
+          if (token){
+              navigation.replace('RegistrodatosFigmaScreen');
+          }
     }
+
+    const abrirModal = () => {
+      setIsVisible(true);
+    }
+
  
 
   const   onClearError = async () => {
@@ -49,20 +61,7 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
      {/* Solo para sacar mensajes de error por pantalla */}
     useEffect(() => {
         if( message.length === 0 ) return;
-          setIsVisible( true )
-                // Alert.alert(message,'',[{
-                //     text: 'Ok',
-                //     onPress: onClearError
-                // }]);
-         
-
-          if (isSendCode){
-              navigation.replace('SendCodeFigmaScreen');
-          }
-
-          if (token){
-              navigation.replace('RegistrodatosFigmaScreen');
-          }
+            abrirModal();
     }, [ message ])
 
  
@@ -162,21 +161,22 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
                           elevation: 10,
                           borderRadius: 5
                       }}>
-                            <HeaderTitleFigma title={ message } 
-                                                                                    marginTop={(Platform.OS === 'ios') ? 40: 40}
+                            <HeaderTitleFigma title="Información" 
+                                                                                    marginTop={(Platform.OS === 'ios') ? 0: 0}
                                                                                     stylesFigma={stylesFigma}
                                                                                     type='big'
-                                                                                    marginBottom={20}
+                                                                                    marginBottom={100}
                                                                                     ></HeaderTitleFigma>
-                           {/* <HeaderTitleFigma title="Debes registrarte con un número diferente o intentar recuperar tu contraseña" 
-                                                                                        marginTop={(Platform.OS === 'ios') ? -5: -5}
-                                                                                        marginBottom={(Platform.OS === 'ios') ? 10: 0}
+                           {/* <HeaderTitleFigma title="Debes registrarte con un número diferente o intentar recuperar tu contraseña"  */}
+                           <HeaderTitleFigma title={ message } 
+                                                                                        marginTop={(Platform.OS === 'ios') ? -30: -30}
+                                                                                        marginBottom={(Platform.OS === 'ios') ? 30: 30}
                                                                                         stylesFigma={stylesFigma}
                                                                                         type='small'
-                                                                                        ></HeaderTitleFigma>  */}
+                                                                                        ></HeaderTitleFigma> 
                             <TouchableOpacity
                                         activeOpacity={ 0.8 }
-                                        style={{...stylesFigma.button, marginTop:20}}
+                                        style={{...stylesFigma.button, marginTop:20, marginBottom:30}}
                                         onPress={ cerrarModal }
                                       >
                                         <Text style={{ color: 'white', fontWeight: 'bold' }}>Ok, entendido</Text>

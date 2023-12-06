@@ -218,7 +218,7 @@ export const RegisterComponent = ( { onLogin, onRegisterScreen }: Props1) => {
                                         </View>  
                                         <View>
                                                     <Text style={ loginStyles.label }>Gender:</Text>
-                                                    <UseGenderComponent onPress={ onSelectTrigger }/> 
+                                                    {/* <UseGenderComponent onPress={ onSelectTrigger }/>  */}
                                         </View>  
                                         <View>
                                                     <Text style={ loginStyles.label }>City:</Text>

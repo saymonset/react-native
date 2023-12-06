@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
-import {   startLoadingRegister, setRegisterResponse, addMessage,removeMessage  } from './registerSlice'
+import {   startLoadingRegister, setRegisterResponse, addMessage,removeMessage, setPassword  } from './registerSlice'
 import {  Register } from '../../../interfaces/register-interfaces';
 import {  useSelector } from 'react-redux';
 
@@ -12,6 +12,7 @@ export const registerThunks = ( register:Register ): AnyAction  => {
       const { token}  = register;
    
 
+      console.log({token})
 
       console.log('pasando por el trunk regstrer create--todo----')
 
@@ -22,7 +23,7 @@ export const registerThunks = ( register:Register ): AnyAction  => {
             await AsyncStorage.setItem('token', token ); 
           }
           // TODO: realizar peticion http
-           const {data} = await vaccinesApi.post(`/users`,{ ...register  } );
+           const {data} = await vaccinesApi.post(`/users/p`,{ ...register  } );
        
           const { statusCode, body, message, resp, } = data;
 
@@ -59,4 +60,14 @@ export const removeErrorThunks = (dispatch): AnyAction => {
       dispatch(removeMessage());
       return
   };
+
+  
+  export const putPasswordThunks = (  password   ): AnyAction  => {
+    return async ( dispatch, getState) => {
+        const payload = {
+              password
+        };    
+        dispatch( setPassword(payload) );
+    }
+  }
   

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { loginStyles } from '../theme/loginTheme';
+import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { useSelector } from 'react-redux';
 
 
@@ -13,7 +13,7 @@ interface Props  {
     placeholder: string;
 }
  
-export const CalendarComponent : React.FC<IProps> = ({ date, placeholder, onDateSelection }) => {
+export const CalendarFigmaComponent : React.FC<IProps> = ({ date, placeholder, onDateSelection }) => {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(date ? new Date(date) : undefined);
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
     const { birth } = useSelector( (state: store ) => state.dependentStore);
@@ -43,10 +43,10 @@ export const CalendarComponent : React.FC<IProps> = ({ date, placeholder, onDate
            <TouchableOpacity onPress={showDatePicker} style={{ marginTop: 0 }}>
                                              <Text
                                                 style={[ 
-                                                    loginStyles.inputField,
-                                                    ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS,{marginTop:0}
+                                                    comunStylesFigma.inputField,
+                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS,{marginTop:0}
                                                 ]}
-                                                >{selectedDate ?'idiidid'+ moment(selectedDate).format('YYYY-MM-DD') : placeholder}</Text>
+                                                >{selectedDate ? moment(selectedDate).format('DD-MM-YYYY') : placeholder}</Text>
                                                 <Ionicons name="calendar-outline" size={40} color="black" />
           </TouchableOpacity>
         

@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react'
+import React, { useContext } from 'react'
 import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,13 +8,21 @@ import { WhiteLogo } from '../components/WhiteLogo';
 import { BackgroundFigma } from '../components/BackgroundFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/appFigmaTheme';
+import { AuthContext } from '../context/AuthContext';
 
 interface Props extends StackScreenProps<any, any> {}
 
 
 export const WelcomeScreen = ({ navigation }: Props) => {
+      {/*  Cargamos data en el contexto */}
+    const {   getGeneroRaltionSchipLoads } = useContext(AuthContext)
 
-    
+    const begin = ( ) => {
+          {/*  Cargamos data en el contexto */}
+        getGeneroRaltionSchipLoads();
+        navigation.replace('SendPhoneFigmaScreen')
+    }
+  
  
   return (
  
@@ -67,7 +75,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
                                   <TouchableOpacity
                                       activeOpacity={ 0.8 }
                                       style={ stylesFigma.button }
-                                       onPress={ () => navigation.replace('SendPhoneFigmaScreen') }
+                                       onPress={ () => begin() }
                                   >
                                       <Text style={ stylesFigma.buttonText } >Comienza ahora</Text>
                                   </TouchableOpacity>

@@ -8,7 +8,7 @@ import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RegistrodatosFigmaComponent } from '../components/RegistrodatosFigmaComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeErrorThunks } from '../store/slices/login';
+import { removeErrorThunks } from '../store/slices/register/registerThunks';
 import { RegisterComponent } from '../components/RegisterComponent';
  
 
@@ -18,14 +18,14 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
  
-    
+
   const   onBack = async () => {
-        Keyboard.dismiss();
-       
-    }
+    Keyboard.dismiss();
+    navigation.replace('SeguridadFigmaScreen')
+  }
  
 
-    const { isLoading, message, resp } = useSelector( (state: store ) => state.registerStore);
+    const {  message, resp } = useSelector( (state: store ) => state.registerStore);
     const dispatch = useDispatch();
 
      const   onClearError = async () => {
@@ -45,7 +45,7 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
             onPress: onClearError
         }]);
 
-        
+        onClearError();
         if (resp){
             navigation.replace('LoginScreen')
         }
@@ -59,6 +59,7 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
  
      const onRegister = async() => {
          Keyboard.dismiss();
+         console.log({message, resp})
      }
 
 
@@ -68,8 +69,13 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
           {/* Background */} 
            <BackgroundSendPhoneFigma></BackgroundSendPhoneFigma>
 
-            <View style={{ flexDirection: 'row',justifyContent:'left', marginBottom:0, marginLeft:15,  marginHorizontal:1, top:( Platform.OS === 'ios') ? 30: 30 }}>
-                <TouchableOpacity onPress={() => { onBack() }} style={{ marginTop: 0 }}>
+           <View style={{ flexDirection: 'row',
+                           justifyContent:'flex-start',
+                           marginBottom:0, 
+                           marginLeft:15,  
+                           marginHorizontal:1, 
+                           marginTop:( Platform.OS === 'ios') ? 30: 30 }}>
+                <TouchableOpacity onPress={() => onBack() } style={{ marginTop: 0 }}>
                     <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
                 </TouchableOpacity>
             </View>

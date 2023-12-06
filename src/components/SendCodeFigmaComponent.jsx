@@ -2,7 +2,8 @@ import React, {  useState, useContext, useEffect} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  resetSendSmsThunks, removeErrorSmsThunks, checkCodeThunks } from '../store/slices/sendSms/index' 
+import {  resetSendSmsThunks, removeErrorSmsThunks } from '../store/slices/sendSms/index' 
+import { reEnviarCodeThunks, checkCodeThunks } from '../store/slices/sendSms/sendSmsThunks'
 import { LoadingScreen } from '../screens/LoadingScreen';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 
@@ -15,6 +16,10 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
 
   
 
+  const reEnviarCode = async() => {
+        Keyboard.dismiss();
+        await dispatch(reEnviarCodeThunks( phone ));
+  }
 
   const onInputChange = (value) => {
       setInputValue( value );
@@ -23,9 +28,8 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
   const onSubmit = async ( event ) => {
       event.preventDefault();
       if( inputValue.trim().length <= 1) return;
-      console.log({inputValue})
-      await dispatch(checkCodeThunks( phone, inputValue.trim()));
-      setInputValue('');
+         await dispatch(checkCodeThunks( phone, inputValue.trim()));
+         setInputValue('');
   }
 
   const onResetSendSms= () => {
@@ -77,7 +81,7 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
                                                                                                         type='small'
                                                                                                         ></HeaderTitleFigma>
                                                         <View style={{marginTop:0}}>
-                                                            <TouchableOpacity onPress={() => {}}>
+                                                            <TouchableOpacity onPress={() => reEnviarCode()}>
                                                                 <Text style={{ color: 'blue' }}>Enviar de nuevo</Text>
                                                             </TouchableOpacity>
                                                         </View>
@@ -96,7 +100,7 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
                                                         style={ stylesFigma.button }
                                                         onPress={ onSubmit }
                                                     >
-                                                        <Text style={ stylesFigma.buttonText } >Check Code</Text>
+                                                        <Text style={ stylesFigma.buttonText } >Siguiente</Text>
                                                     </TouchableOpacity>
                                         </View>
                     
