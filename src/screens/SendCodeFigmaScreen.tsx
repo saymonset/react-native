@@ -26,6 +26,7 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
     
   const   onBack = async () => {
         Keyboard.dismiss();
+        navigation.replace('SendPhoneFigmaScreen')
        
     }
 
@@ -44,7 +45,12 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
           {/* Background */} 
            <BackgroundSendPhoneFigma></BackgroundSendPhoneFigma>
 
-            <View style={{ flexDirection: 'row',justifyContent:'left', marginBottom:0, marginLeft:15,  marginHorizontal:1, top:( Platform.OS === 'ios') ? 30: 30 }}>
+           <View style={{ flexDirection: 'row',
+                           justifyContent:'flex-start',
+                           marginBottom:0, 
+                           marginLeft:15,  
+                           marginHorizontal:1, 
+                           marginTop:( Platform.OS === 'ios') ? 30: 30 }}>
                 <TouchableOpacity onPress={() => { onBack() }} style={{ marginTop: 0 }}>
                     <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
                 </TouchableOpacity>
@@ -86,25 +92,10 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
                   
                                               
                                 <SendCodeFigmaComponent navigation = { navigation }></SendCodeFigmaComponent>
-                                <View style={ {flex:1}}> 
-                                        {/* Boton login */}
-                                        <View style={ {...stylesFigma.numContainer} }>
-                                              <HeaderTitleFigma title="¿No has recibido ningún código?" 
-                                                                                                marginTop={(Platform.OS === 'ios') ? -5: -5}
-                                                                                                marginBottom={(Platform.OS === 'ios') ? 10: 0}
-                                                                                                stylesFigma={stylesFigma}
-                                                                                                type='small'
-                                                                                                ></HeaderTitleFigma>
-                                                 <View style={{marginTop:40}}>
-                                                    <TouchableOpacity onPress={() => {}}>
-                                                        <Text style={{ color: 'blue' }}>Enviar de nuevo</Text>
-                                                      </TouchableOpacity>
-                                                 </View>
-                                        </View>
-                                </View>
+                              
                            <View style={ {flex:1}}> 
                               {/* Boton login */}
-                              <View style={ {...stylesFigma.numContainer, marginTop:0} }>
+                              {/* <View style={ {...stylesFigma.numContainer, marginTop:0} }>
                                   <TouchableOpacity
                                       activeOpacity={ 0.8 }
                                       style={ stylesFigma.button }
@@ -112,7 +103,7 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
                                   >
                                       <Text style={ stylesFigma.buttonText } >Siguiente</Text>
                                   </TouchableOpacity>
-                              </View>
+                              </View> */}
                            </View>
                              </View>
                              

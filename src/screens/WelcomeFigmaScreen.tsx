@@ -67,7 +67,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
                                   <TouchableOpacity
                                       activeOpacity={ 0.8 }
                                       style={ stylesFigma.button }
-                                       onPress={ () => {} }
+                                       onPress={ () => navigation.replace('SendPhoneFigmaScreen') }
                                   >
                                       <Text style={ stylesFigma.buttonText } >Comienza ahora</Text>
                                   </TouchableOpacity>

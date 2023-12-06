@@ -32,26 +32,19 @@ export const SendSmsScreen = ({ navigation }: Props) => {
      {/* Solo para sacar mensajes de error por pantalla */}
     useEffect(() => {
         if( message.length === 0 ) return;
-
-        Alert.alert(message,'',[{
-            text: 'Ok',
-            onPress: onClearError
-        }]);
-
+                Alert.alert(message,'',[{
+                    text: 'Ok',
+                    onPress: onClearError
+                }]);
         onClearError();
 
         if (isSendCode){
-            //console.log('Todo cool, isSendCode:' + isSendCode)
             navigation.replace('SendSmsScreen');
         }
 
         if (token){
-            //console.log('Todo cool, isSendCode:' + isSendCode)
             navigation.replace('RegisterScreen');
         }
-
-      
-
     }, [ message ])
 
     return (

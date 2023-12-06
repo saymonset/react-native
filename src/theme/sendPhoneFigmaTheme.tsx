@@ -35,6 +35,10 @@ export const stylesFigma = StyleSheet.create({
         flex:1, 
         top:0
     },
+    buttonContainer: {
+        alignItems: 'center',
+        marginTop: 50,
+    },
     button: {
        // borderWidth: 2,
        // borderColor: 'white',

@@ -39,12 +39,14 @@ export const Navigator = () => {
       
           (status !== 'authenticated')
           ? (<>
-                   <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } />
+               
+               <Stack.Screen name="SendCodeFigmaScreen" component={ SendCodeFigmaScreen } />
                   <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } />
+                  
                   <Stack.Screen name="SendPhoneFigmaScreen" component={ SendPhoneFigmaScreen } />
-                  <Stack.Screen name="SendCodeFigmaScreen" component={ SendCodeFigmaScreen } />
+             
                   <Stack.Screen name="SeguridadFigmaScreen" component={ SeguridadFigmaScreen } />
-                 
+                  <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } />
                  
                 
                 
