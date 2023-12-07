@@ -1,22 +1,6 @@
-import React, { useContext } from 'react'
-import { StackScreenProps } from '@react-navigation/stack';
-import { Text, View, FlatList, TouchableOpacity, Keyboard } from 'react-native';
-
-import { logoutThunks } from '../store/slices/login/loginThunks'
-import { styles } from '../theme/appTheme';
-import { FlatListMenuItem } from '../components/FlatListMenuItem';
-import { HeaderTitle } from '../components/HeaderTitle';
-import { menuItems } from '../data/menuItems';
-import {  ItemSeparator } from '../components/ItemSeparator';
-import { loginStyles } from '../theme/loginTheme';
-import { useDispatch, useSelector } from 'react-redux';
-import { Background } from '../components/Background';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { AuthContext } from '../context/AuthContext';
-//import  venezuela  from '../../node_modules/venezuela/index';
 import venezuela from 'venezuela';
 
-interface Props extends StackScreenProps<any, any> {}
+
 
 interface Pais {
   'estado': string,
