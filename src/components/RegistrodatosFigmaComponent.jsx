@@ -19,6 +19,8 @@ import { FlatListMenuItemFigma } from '../components/FlatListMenuItemFigma';
 import { HeaderTitle } from '../components/HeaderTitle';
 import {  ItemSeparator } from '../components/ItemSeparator';
 import { Pais } from '../interfaces/appInterfaces'
+import { ModalCitiesComponent } from '../components/ModalCitiesComponent';
+import { color } from 'react-native-elements/dist/helpers';
 
 interface Props1  {
     onLogin: () => void;
@@ -30,10 +32,9 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
 
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleMunicipio, setIsVisibleMunicipio] = useState(false);
-  const [municipios, setMunicipios] = useState(false);
-  const [estadoSeleccionado, setEstadoSeleccionado] = useState(null);
-  const [municipioSeleccionado, setMunicipioSeleccionado] = useState(null);
-  const [selected, setSelected] = React.useState("");
+  const [idEstado, setIdEstado] = useState(0);
+  const [estado, setEstado] = useState(null);
+  const [municipio, setMunicipio] = useState(null);
   const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
   const onSelectTrigger = (value ) => {
       setSelectedGeneroId(value);
@@ -42,33 +43,44 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
   const { token, phone } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
   const { name,  lastname,  password, ci, email, state, city, birth, gender_id, status, onChange } = useForm({
-      name:'', lastname:'', password:'', ci:'', email:'', state:'', city:'', birth:'', gender_id:'', status:true
+      name:'', lastname:'', password:'', ci:'', email:'', state:undefined, city:'', birth:'', gender_id:'', status:true
    });
   const { estadosOfVenezuela, municipiosOfEstadosOfVenezuela } = PaisScreen(); 
 
 
-   const showModal = async(isMunicipio) => {
-    //if (!isMunicipio) setIsVisible(true);
-   // if (isMunicipio)  setIsVisibleMunicipio(true);
-   setIsVisible(true);
-    
+   const showModal = async() => {
+        setIsVisible(true);
    }
 
-   const cerrarModal = (menuItem: Pais, isMunicipio: Boolean) => {
-  //  if (!isMunicipio){
-        setEstadoSeleccionado(menuItem);
-        setMunicipios( municipiosOfEstadosOfVenezuela(menuItem.id_estado) );
-        console.log( municipiosOfEstadosOfVenezuela(menuItem.id_estado));
-        setIsVisible(false);
-        onChange(`${menuItem.capital}-${menuItem.estado}`, 'state')
-   // }
+   const showModalMunicipio = async() => {
+       setIsVisibleMunicipio(true);
+   }
 
-    // if (isMunicipio){
-    //     setMunicipioSeleccionado(menuItem);
+   const getValor = (menuItem: Pais,  propiedad ) => {
+     if (propiedad === 'estado'){
+        // console.log({propiedad});
+        // console.log({ menuItem})
+        setIsVisible(false);
+        setIdEstado(menuItem.id_estado) 
+        let mun = municipiosOfEstadosOfVenezuela(menuItem.id_estado)[0].municipios;
+        // let [ objeto ] = mun;
+        // let { municipios } = objeto;
         
-    //     setIsVisibleMunicipio(false);
-    //     onChange(`${menuItem.capital}-${menuItem.municipio}`, 'city')
-    // }
+     //   console.log('Grabando------------')
+      //  console.log( { municipios })
+        //onChange(`${menuItem.capital}-${menuItem.estado}`, 'state')
+        setEstado(`${menuItem.capital}-${menuItem.estado}`)
+        setMunicipio('');
+      //  console.log('Grabando--------fin----')
+        //onChange(``, 'city')
+     }
+
+     if (propiedad === 'municipio'){
+        setIsVisibleMunicipio(false);
+       //onChange(`${menuItem.capital}-${menuItem.municipio}`, 'city')
+        setMunicipio(`${menuItem.capital}-${menuItem.municipio}`);
+     }
+  
    
      console.log({ menuItem });
     }
@@ -82,8 +94,8 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
        password:paswordFromSecurity,
        ci,
        email,
-       state,
-       city,
+       state:estado,
+       city:municipio,
        birth,
        gender_id:selectedGeneroId,
        status,
@@ -122,128 +134,140 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                             <Text style={ comunStylesFigma.title }>Registro</Text>
                             <SafeAreaView 
                             style={[comunStylesFigma.container]}>
-                                    <View style={[comunStylesFigma.column]}>
-                                        <View style = {{ marginVertical:20}}>
-                                            <Text style={ comunStylesFigma.label }>Nombre:</Text>
-                                            <TextInput 
-                                                placeholder="Enter your name:"
-                                                placeholderTextColor="rgba(0,0,0,0.4)"
-                                                underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                style={[ 
-                                                    comunStylesFigma.inputField,
-                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                ]}
-                                                selectionColor="white"
+                                                <View style={[comunStylesFigma.column]}>
+                                                    <View style = {{ marginVertical:20}}>
+                                                        <Text style={ comunStylesFigma.label }>Nombre:</Text>
+                                                        <TextInput 
+                                                            placeholder="Enter your name:"
+                                                            placeholderTextColor="rgba(0,0,0,0.4)"
+                                                            underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                            style={[ 
+                                                                comunStylesFigma.inputField,
+                                                                ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                            ]}
+                                                            selectionColor="white"
 
-                                                onChangeText={ (value) => onChange(value, 'name') }
-                                                value={ name }
-                                                onSubmitEditing={ onRegister }
+                                                            onChangeText={ (value) => onChange(value, 'name') }
+                                                            value={ name }
+                                                            onSubmitEditing={ onRegister }
 
-                                                autoCapitalize="words"
-                                                autoCorrect={ false }
-                                            />
-                                        </View> 
-                                        <View style = {{ marginVertical:20}}>
-                                            <Text style={ comunStylesFigma.label }>Apellido:</Text>
-                                            <TextInput 
-                                                placeholder="Enter your lastname:"
-                                                placeholderTextColor="rgba(0,0,0,0.4)"
-                                                underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                style={[ 
-                                                    comunStylesFigma.inputField,
-                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                ]}
-                                                selectionColor="white"
+                                                            autoCapitalize="words"
+                                                            autoCorrect={ false }
+                                                        />
+                                                    </View> 
+                                                    <View style = {{ marginVertical:20}}>
+                                                        <Text style={ comunStylesFigma.label }>Apellido:</Text>
+                                                        <TextInput 
+                                                            placeholder="Enter your lastname:"
+                                                            placeholderTextColor="rgba(0,0,0,0.4)"
+                                                            underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                            style={[ 
+                                                                comunStylesFigma.inputField,
+                                                                ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                            ]}
+                                                            selectionColor="white"
 
-                                                onChangeText={ (value) => onChange(value, 'lastname') }
-                                                value={ lastname }
-                                                onSubmitEditing={ onRegister }
+                                                            onChangeText={ (value) => onChange(value, 'lastname') }
+                                                            value={ lastname }
+                                                            onSubmitEditing={ onRegister }
 
-                                                autoCapitalize="words"
-                                                autoCorrect={ false }
-                                            />
-                                        </View> 
-                                        <View style = {{ marginVertical:20}}>
-                                                    <Text style={ comunStylesFigma.label }>Sexo:</Text>
-                                                    <UseGenderComponent onPress={ onSelectTrigger }/> 
-                                        </View>  
-                                        <View style = {{ marginVertical:20}}>
-                                                    <Text style={ comunStylesFigma.label }>Cedula:</Text>
-                                                    <TextInput 
-                                                        placeholder="V- 12345678"
-                                                        placeholderTextColor="rgba(0,0,0,0.4)"
-                                                        underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                        style={[ 
-                                                            comunStylesFigma.inputField,
-                                                            ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                        ]}
-                                                        selectionColor="white"
+                                                            autoCapitalize="words"
+                                                            autoCorrect={ false }
+                                                        />
+                                                    </View> 
+                                                    <View style = {{ marginVertical:20}}>
+                                                                <Text style={ comunStylesFigma.label }>Sexo:</Text>
+                                                                <UseGenderComponent onPress={ onSelectTrigger }/> 
+                                                    </View>  
+                                                    <View style = {{ marginVertical:20}}>
+                                                                <Text style={ comunStylesFigma.label }>Cedula:</Text>
+                                                                <TextInput 
+                                                                    placeholder="V- 12345678"
+                                                                    placeholderTextColor="rgba(0,0,0,0.4)"
+                                                                    underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                                    style={[ 
+                                                                        comunStylesFigma.inputField,
+                                                                        ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                                    ]}
+                                                                    selectionColor="white"
 
-                                                        onChangeText={ (value) => onChange(value, 'ci') }
-                                                        value={ ci }
-                                                        onSubmitEditing={ onRegister }
+                                                                    onChangeText={ (value) => onChange(value, 'ci') }
+                                                                    value={ ci }
+                                                                    onSubmitEditing={ onRegister }
 
-                                                        autoCapitalize="words"
-                                                        autoCorrect={ false }
-                                                    />
-                                        </View>  
-                                        <View style = {{ marginVertical:20}}>
-                                                <Text style={ comunStylesFigma.label }>Dirección de correo electrónico:</Text>
-                                                <TextInput 
-                                                    placeholder="Enter your email:"
-                                                    placeholderTextColor="rgba(0,0,0,0.4)"
-                                                    keyboardType="email-address"
-                                                    underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                    style={[ 
-                                                        comunStylesFigma.inputField,
-                                                        ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                    ]}
-                                                    selectionColor="white"
+                                                                    autoCapitalize="words"
+                                                                    autoCorrect={ false }
+                                                                />
+                                                    </View>  
+                                                    <View style = {{ marginVertical:20}}>
+                                                            <Text style={ comunStylesFigma.label }>Dirección de correo electrónico:</Text>
+                                                            <TextInput 
+                                                                placeholder="Enter your email:"
+                                                                placeholderTextColor="rgba(0,0,0,0.4)"
+                                                                keyboardType="email-address"
+                                                                underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                                style={[ 
+                                                                    comunStylesFigma.inputField,
+                                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                                ]}
+                                                                selectionColor="white"
 
-                                                    onChangeText={ (value) => onChange(value, 'email') }
-                                                    value={ email }
-                                                    onSubmitEditing={ onRegister }
+                                                                onChangeText={ (value) => onChange(value, 'email') }
+                                                                value={ email }
+                                                                onSubmitEditing={ onRegister }
 
 
-                                                    autoCapitalize="none"
-                                                    autoCorrect={ false }
-                                                />
-                                        </View>
-                                        <View style = {{ marginVertical:20}}>
-                                                    <Text style={ comunStylesFigma.label }>Fecha de nacimiento:</Text>
-                                                    <CalendarFigmaComponent onDateSelection= {(value) => onDateSelection(value)}/>
-                                        </View>
-                                       
-                                       
+                                                                autoCapitalize="none"
+                                                                autoCorrect={ false }
+                                                            />
+                                                    </View>
+                                                    <View style = {{ marginVertical:20}}>
+                                                                <Text style={ comunStylesFigma.label }>Fecha de nacimiento:</Text>
+                                                                <CalendarFigmaComponent onDateSelection= {(value) => onDateSelection(value)}/>
+                                                    </View>
                                         
-                                       
-                                    
-                                      
-                                        <View style = {{ marginVertical:20}}>
-                                                    <Text style={ comunStylesFigma.label }>Estado:</Text>
-                                                    <Text  style={[ 
-                                                            comunStylesFigma.inputField,
-                                                            ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                        ]}>{state}</Text>
-                                                    <TouchableOpacity
-                                                        style={[
-                                                            comunStylesFigma.inputField,
-                                                            {marginTop:10},
-                                                            (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
-                                                            { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
-                                                        ]}
-                                                        onPress={() => showModal(false)}
-                                                        >
-                                                        <Text style={{ color: 'white' }}>Selecciona:</Text>
-                                                        </TouchableOpacity>
-                                        </View>  
+                                                    <View style = {{ marginVertical:20}}>
+                                                            
+                                                                <Text  style={[ 
+                                                                        comunStylesFigma.inputField,
+                                                                        ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                                    ]}>{estado}</Text>
 
-                                       { estadoSeleccionado && ( <View style = {{ marginVertical:20}}>
+                                                                {isVisible && (<ModalCitiesComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
+                                                                                                     propiedad = 'estado' 
+                                                                                                    />
+                                                                               )
+                                                                }    
+
+                                                                <TouchableOpacity
+                                                                    style={[
+                                                                        comunStylesFigma.inputField,
+                                                                        {marginTop:10},
+                                                                        (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
+                                                                        { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
+                                                                    ]}
+                                                                    onPress={() => showModal(false)}
+                                                                    >
+                                                                    <Text style={ {...comunStylesFigma.label, color:'white'} }>Estado:</Text>
+                                                                </TouchableOpacity>
+
+                                                    </View>  
+
+
+                                                    { estado && ( <View style = {{ marginVertical:20}}>
                                                                             <Text style={ comunStylesFigma.label }>Municipio:</Text>
                                                                             <Text  style={[ 
                                                                                     comunStylesFigma.inputField,
                                                                                     ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                                                ]}>{city}</Text>
+                                                                                ]}>{municipio}</Text>
+
+                                                                    {isVisibleMunicipio && (<ModalCitiesComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
+                                                                                                                  propiedad = 'municipio' 
+                                                                                                                  idEstado={ idEstado}
+                                                                                                    />
+                                                                               )
+                                                                     }    
+
                                                                             <TouchableOpacity
                                                                                 style={[
                                                                                     comunStylesFigma.inputField,
@@ -251,11 +275,13 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                                     (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
                                                                                     { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
                                                                                 ]}
-                                                                                onPress={() => showModal(true)}
+                                                                                onPress={() => showModalMunicipio(true)}
                                                                                 >
                                                                                 <Text style={{ color: 'white' }}>Selecciona:</Text>
                                                                                 </TouchableOpacity>
-                                                                </View>    )}
+                                                     </View>    )}
+
+                                       
 
                                          
                                       
@@ -283,108 +309,9 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                        
      
 
-                                        <Modal
-                                                animationType='fade'
-                                                visible={ isVisible }
-                                                transparent= {true}
-                                                >
-                                                {/** Background color negro */}
-                                                <View style = {{
-                                                    flex:1, 
-                                                    // height:100,
-                                                    // width:100,
-                                                    backgroundColor: 'rgba(0,0,0,0.3)',
-                                                    justifyContent: 'center',
-                                                    alignItems:'center'
-                                                }}>
+                                         
 
-                                                        {/**  Contendido del modal */}
-                                                        <View style ={{
-                                                            width:350,
-                                                            height:350,
-                                                            backgroundColor: 'white',
-                                                            justifyContent:'center',
-                                                            alignItems:'center',
-                                                            shadowOffset:{
-                                                                width:0,
-                                                                height:10
-                                                            },
-                                                            shadowOpacity: 0.25,
-                                                            elevation: 10,
-                                                            borderRadius: 5
-                                                        }}>
-                                                                    <View style={{flex:1, ...stylesFigma.globalMargin}}>
-                                                                            <FlatList
-                                                                                data={ estadosOfVenezuela() }
-                                                                                renderItem={ ( { item } ) =><FlatListMenuItemFigma menuItem={ item } cerrarModal={ (value, isMunicipio) => cerrarModal(value, isMunicipio) }/>}
-                                                                                keyExtractor= { (item) => item.id_estado}
-                                                                                ListHeaderComponent = { () =>  <HeaderTitleFigma title="Estados" 
-                                                                                                                marginTop={(Platform.OS === 'ios') ? 40: 40}
-                                                                                                                stylesFigma={stylesFigma}
-                                                                                                                type='big'
-                                                                                                                marginBottom={20}
-                                                                                                                textAlign='center'
-                                                                                                                ></HeaderTitleFigma> }
-                                                                                ItemSeparatorComponent = { () => <ItemSeparator/> }
-                                                                                />
-                                                                    </View>
-                                                        </View>
-
-                                                </View>
-                                            </Modal>
-
-                                            <Modal
-                                                animationType='fade'
-                                                visible={ isVisibleMunicipio }
-                                                transparent= {true}
-                                                >
-                                                {/** Background color negro */}
-                                                <View style = {{
-                                                    flex:1, 
-                                                    // height:100,
-                                                    // width:100,
-                                                    backgroundColor: 'rgba(0,0,0,0.3)',
-                                                    justifyContent: 'center',
-                                                    alignItems:'center'
-                                                }}>
-
-                                                        {/**  Contendido del modal */}
-                                                        <View style ={{
-                                                            width:350,
-                                                            height:350,
-                                                            backgroundColor: 'white',
-                                                            justifyContent:'center',
-                                                            alignItems:'center',
-                                                            shadowOffset:{
-                                                                width:0,
-                                                                height:10
-                                                            },
-                                                            shadowOpacity: 0.25,
-                                                            elevation: 10,
-                                                            borderRadius: 5
-                                                        }}>
-                                                                    <View style={{flex:1, ...stylesFigma.globalMargin}}>
-                                                                            <FlatList
-                                                                                data={ municipios }
-                                                                                renderItem={ ( { item } ) =><FlatListMenuItemFigma menuItem={ item } 
-                                                                                                                                   cerrarModal={ (value, isMunicipio) => cerrarModal(value, isMunicipio) }
-                                                                                                                                    isMunicipio 
-                                                                                                                                />}
-                                                                                keyExtractor= { (item) => item.municipio}
-                                                                                ListHeaderComponent = { () =>  <HeaderTitleFigma title="Municipios" 
-                                                                                                                marginTop={(Platform.OS === 'ios') ? 40: 40}
-                                                                                                                stylesFigma={stylesFigma}
-                                                                                                                type='big'
-                                                                                                                marginBottom={20}
-                                                                                                                textAlign='center'
-                                                                                                                ></HeaderTitleFigma> }
-                                                                                ItemSeparatorComponent = { () => <ItemSeparator/> }
-                                                                                />
-                                                                    </View>
-                                                        </View>
-
-                                                </View>
-                                            </Modal>
+                                          
     </>  
   )
 }

@@ -6,42 +6,37 @@ import { Pais } from '../interfaces/appInterfaces'
 
 interface Props {
     menuItem: Pais;
-    cerrarModal: (menuItem:Pais, isMunicipio: boolean) => void;
-    isMunicipio?: boolean;
+    cerrarModal: (menuItem:Pais) => void;
+    propiedad?: 'estado' | 'municipio'
 }
 
-export const FlatListMenuItemFigma = ({ menuItem, cerrarModal, isMunicipio = false }:Props) => {
+export const FlatListMenuItemFigma = ({ menuItem, cerrarModal, propiedad = 'estado'  }:Props) => {
 
   const enviar = (  menuItem: Pais) => {
-    cerrarModal(menuItem, isMunicipio);
+    cerrarModal(menuItem);
   }
 
   return (
     <TouchableOpacity
+      style={ styles.container}
        activeOpacity={0.8}
        onPress = { () => {
             enviar( menuItem );
        }
     }
       >
-         <Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.capital }-{ menuItem.estado }</Text>
-           {/* { !isMunicipio && ( <Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.capital }-{ menuItem.estado }</Text>)}
-           {  isMunicipio && ( <Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.capital }-{ menuItem.municipio }</Text>)} */}
-            <View style = {{ flex: 1 }} />
-            {/* <Icon
-                name = "chevron-forward-outline"
-                color = "gray"
-                size = { 23 }
-            /> */}
+        { propiedad === 'estado' && (<Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.capital }-{ menuItem.estado }</Text>)} 
+        { propiedad === 'municipio' && (<Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.capital }-{ menuItem.municipio }</Text>)} 
+            {/* <View style = {{ flex: 1 }} /> */}
     </TouchableOpacity>
-   
   )
 }
 
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom:10,
     },
     itemText: {
         marginLeft: 10,

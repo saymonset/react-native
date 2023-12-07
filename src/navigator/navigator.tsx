@@ -20,6 +20,7 @@ import { SeguridadFigmaScreen } from '../screens/SeguridadFigmaScreen';
 import { RegistrodatosFigmaScreen } from '../screens/RegistrodatosFigmaScreen';
 
 
+
 const Stack = createStackNavigator();
 
 export const Navigator = () => {
@@ -42,8 +43,9 @@ export const Navigator = () => {
                
              
 
+                
                   <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } />
-
+                  {/* <Stack.Screen name="ModalCitiesComponent" component={ ModalCitiesComponent } /> */}
                   <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } />
                   
                   <Stack.Screen name="SendPhoneFigmaScreen" component={ SendPhoneFigmaScreen } />
