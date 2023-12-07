@@ -41,7 +41,9 @@ export const Navigator = () => {
           ? (<>
                
              
-              
+
+                  <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } />
+
                   <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } />
                   
                   <Stack.Screen name="SendPhoneFigmaScreen" component={ SendPhoneFigmaScreen } />
@@ -49,7 +51,7 @@ export const Navigator = () => {
                   <Stack.Screen name="SeguridadFigmaScreen" component={ SeguridadFigmaScreen } />
              
                  
-                  <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } />
+                 
                  
                 
                 

@@ -1,5 +1,11 @@
 
-
+export interface Pais {
+    'estado': string,
+    'capital':string,
+    'id_estado':number,
+    'municipio'?: string;
+    'municipios': string[]
+  }
 
 export interface MenuItem {
     name: string;

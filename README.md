@@ -29,4 +29,6 @@ yarn add @react-native-async-storage/async-storage
 
 yarn add react-native-modal-datetime-picker
 
+ npm install venezuela --save
+
 npx pod-install
