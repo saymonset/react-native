@@ -10,6 +10,7 @@ import { RegistrodatosFigmaComponent } from '../components/RegistrodatosFigmaCom
 import { useDispatch, useSelector } from 'react-redux';
 import { removeErrorThunks } from '../store/slices/register/registerThunks';
 import { RegisterComponent } from '../components/RegisterComponent';
+import { ModalMessageComponent } from '../components/ModalMessageComponent';
  
 
 
@@ -24,31 +25,34 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
     navigation.replace('SeguridadFigmaScreen')
   }
  
-
+    const [isVisible, setIsVisible] = useState(false);
     const {  message, resp } = useSelector( (state: store ) => state.registerStore);
     const dispatch = useDispatch();
 
-     const   onClearError = async () => {
-    //   await dispatch(());
-      await removeErrorThunks(dispatch)
-      console.log('removiendo error createregister')
-       } 
+      const   onClearError = async () => {
+          await removeErrorThunks(dispatch)
+          console.log('removiendo error createregister')
+      } 
+ 
+      const cerrarModal = () => {
+        setIsVisible(false);
+        //Borramos mensajes del thrunk
+        onClearError();
 
-       
-       
+          if (resp){
+              navigation.replace('LoginScreen')
+          }
+      }
+
+       const abrirModal = () => {
+          setIsVisible(true);
+      }
 
      useEffect(() => {
         if( message.length === 0 ) return;
 
-        Alert.alert( message , '',[{
-            text: 'Ok',
-            onPress: onClearError
-        }]);
-
-        onClearError();
-        if (resp){
-            navigation.replace('LoginScreen')
-        }
+        abrirModal();
+       
     }, [ message ])
 
 
@@ -107,6 +111,9 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
                                               
                                               <RegistrodatosFigmaComponent  onLogin={ onLogin } onRegisterScreen={() => onRegister()}></RegistrodatosFigmaComponent>  
                                               
+                                              { isVisible && (<ModalMessageComponent getValor = { () => cerrarModal() }
+                                                                      message={`${message}`}
+                                                />)}
                                                       
                                                 
                                       

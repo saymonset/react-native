@@ -13,6 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SendCodeFigmaComponent } from '../components/SendCodeFigmaComponent';
 import { removeErrorSmsThunks } from '../store/slices/sendSms/sendSmsThunks';
 import {  removeErrorThunks } from '../store/slices/register/index';
+import { ModalMessageComponent } from '../components/ModalMessageComponent';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -37,10 +38,7 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
           setIsVisible(false);
           //Borramos mensajes del thrunk
           onClearError();
-        
-          // if (isSendCode){
-          //     navigation.replace('SendCodeFigmaScreen');
-          // }
+         
           if (token){
               navigation.replace('SeguridadFigmaScreen');
           }
@@ -49,8 +47,6 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
       const abrirModal = () => {
         setIsVisible(true);
       }
-
-
 
       const   onClearError = async () => {
             await removeErrorSmsThunks(dispatch);
@@ -117,6 +113,10 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
                   
                                               
                                 <SendCodeFigmaComponent navigation = { navigation }></SendCodeFigmaComponent>
+
+                                { isVisible && (<ModalMessageComponent getValor = { () => cerrarModal() }
+                                                                      message={`${message}`}
+                                                />)}
                               
                            
                              </View>
@@ -126,53 +126,7 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
             </KeyboardAvoidingView>   
 
 
-            <Modal
-             animationType='fade'
-             visible={ isVisible }
-             transparent= {true}
-             >
-            {/** Background color negro */}
-            <View style = {{
-                flex:1, 
-                // height:100,
-                // width:100,
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                justifyContent: 'center',
-                alignItems:'center'
-            }}>
-
-               {/**  Contendido del modal */}
-              <View style ={{
-                   width:350,
-                   height:350,
-                   backgroundColor: '#B0E2FF',
-                   justifyContent:'center',
-                   alignItems:'center',
-                   shadowOffset:{
-                    width:0,
-                    height:10
-                   },
-                   shadowOpacity: 0.25,
-                   elevation: 10,
-                   borderRadius: 5
-              }}>
-                    <HeaderTitleFigma title="Hemos verificado tu cuenta" 
-                                                                            marginTop={(Platform.OS === 'ios') ? 0: 0}
-                                                                            stylesFigma={stylesFigma}
-                                                                            type='big'
-                                                                            marginBottom={20}
-                                                                            ></HeaderTitleFigma>
-                    <TouchableOpacity
-                                activeOpacity={ 0.8 }
-                                style={{...stylesFigma.button, alignItems:'center', marginTop:20}}
-                                onPress={() => cerrarModal() }
-                              >
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Enviar</Text>
-                      </TouchableOpacity>
-              </View>
-
-            </View>
-        </Modal>
+        
        
     </>
   )

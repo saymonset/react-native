@@ -12,6 +12,7 @@ import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {  removeErrorSmsThunks } from '../store/slices/sendSms/index' ;
 import {  removeErrorThunks } from '../store/slices/register/index';
+import { ModalMessageComponent } from '../components/ModalMessageComponent';
 
 
 interface Props extends StackScreenProps<any, any> {}
@@ -33,23 +34,23 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
         navigation.replace('WelcomeScreen')
     }
 
-    const cerrarModal = () => {
-          setIsVisible(false);
-          //Borramos mensajes del thrunk
-          onClearError();
-        
-          if (isSendCode){
-            navigation.replace('SendCodeFigmaScreen');
-          }
-          if (token){
-              navigation.replace('RegistrodatosFigmaScreen');
-          }
-    }
 
-    const abrirModal = () => {
-      setIsVisible(true);
-    }
+            const cerrarModal = () => {
+              setIsVisible(false);
+              //Borramos mensajes del thrunk
+              onClearError();
+            
+              if (isSendCode){
+                navigation.replace('SendCodeFigmaScreen');
+              }
+              if (token){
+                  navigation.replace('RegistrodatosFigmaScreen');
+              }
+        }
 
+        const abrirModal = () => {
+          setIsVisible(true);
+        }
  
 
   const   onClearError = async () => {
@@ -113,17 +114,9 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
                                 <SendPhonFigmaComponent navigation = { navigation }></SendPhonFigmaComponent>
 
                                
-                           {/* <View style={ {flex:1}}> 
-                              <View style={ {...stylesFigma.numContainer} }>
-                                  <TouchableOpacity
-                                      activeOpacity={ 0.8 }
-                                      style={ stylesFigma.button }
-                                      onPress={ () => onSubmit }
-                                  >
-                                      <Text style={ stylesFigma.buttonText } >Enviar código</Text>
-                                  </TouchableOpacity>
-                              </View>
-                           </View> */}
+                                { isVisible && (<ModalMessageComponent getValor = { () => cerrarModal() }
+                                                                      message={`${message}`}
+                                                />)}
                         </View>
                              
                           
@@ -131,61 +124,7 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
             </KeyboardAvoidingView>   
 
 
-            <Modal
-                    animationType='fade'
-                    visible={ isVisible }
-                    transparent= {true}
-                    >
-                    {/** Background color negro */}
-                    <View style = {{
-                        flex:1, 
-                        // height:100,
-                        // width:100,
-                        backgroundColor: 'rgba(0,0,0,0.3)',
-                        justifyContent: 'center',
-                        alignItems:'center'
-                    }}>
-
-                      {/**  Contendido del modal */}
-                      <View style ={{
-                          width:400,
-                          height:350,
-                          backgroundColor: 'white',
-                          justifyContent:'center',
-                          alignItems:'center',
-                          shadowOffset:{
-                            width:0,
-                            height:10
-                          },
-                          shadowOpacity: 0.25,
-                          elevation: 10,
-                          borderRadius: 5
-                      }}>
-                            <HeaderTitleFigma title="Información" 
-                                                                                    marginTop={(Platform.OS === 'ios') ? 0: 0}
-                                                                                    stylesFigma={stylesFigma}
-                                                                                    type='big'
-                                                                                    marginBottom={100}
-                                                                                    ></HeaderTitleFigma>
-                           {/* <HeaderTitleFigma title="Debes registrarte con un número diferente o intentar recuperar tu contraseña"  */}
-                           <HeaderTitleFigma title={ message } 
-                                                                                        marginTop={(Platform.OS === 'ios') ? -30: -30}
-                                                                                        marginBottom={(Platform.OS === 'ios') ? 30: 30}
-                                                                                        stylesFigma={stylesFigma}
-                                                                                        type='small'
-                                                                                        ></HeaderTitleFigma> 
-                            <TouchableOpacity
-                                        activeOpacity={ 0.8 }
-                                        style={{...stylesFigma.button, marginTop:20, marginBottom:30}}
-                                        onPress={ cerrarModal }
-                                      >
-                                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Ok, entendido</Text>
-                              </TouchableOpacity>
-                      </View>
-
-                    </View>
-            </Modal>
-       
+          
     </>
   )
 }

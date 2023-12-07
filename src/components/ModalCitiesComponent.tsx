@@ -22,10 +22,6 @@ export const ModalCitiesComponent = ( { getValor, propiedad = 'estado', idEstado
     const enviarValor = (menuItem: Pais) => {
               setIsVisible(false);
               getValor( menuItem, propiedad);
-
-            //   console.log('--------------------')
-            //   let mun =  municipiosOfEstadosOfVenezuela( idEstado );
-            //   console.log({ mun})
           }
   return (
     <>
@@ -37,8 +33,6 @@ export const ModalCitiesComponent = ( { getValor, propiedad = 'estado', idEstado
                                                 {/** Background color negro */}
                                                 <View style = {{
                                                     flex:1, 
-                                                    // height:100,
-                                                    // width:100,
                                                     backgroundColor: 'rgba(0,0,0,0.3)',
                                                     justifyContent: 'center',
                                                     alignItems:'center'
@@ -62,12 +56,12 @@ export const ModalCitiesComponent = ( { getValor, propiedad = 'estado', idEstado
                                                                     <View style={{flex:1, ...stylesFigma.globalMargin}}>
                                                                    { propiedad==='estado' && (
                                                                                     <FlatList
-                                                                                    data={ estadosOfVenezuela() }
+                                                                                    data={ estadosOfVenezuela()|| []}
                                                                                     renderItem={ ( { item } ) =><FlatListMenuItemFigma 
                                                                                                                     menuItem={ item } 
                                                                                                                     cerrarModal={ (value) => enviarValor(value)}
                                                                                                                     propiedad={'estado'}/>}
-                                                                                    keyExtractor= { (item) => item.id_estado}
+                                                                                    keyExtractor= { (item) => item.id_estado.toString()}
                                                                                     ListHeaderComponent = { () =>  <HeaderTitleFigma title="Estados" 
                                                                                                                     marginTop={(Platform.OS === 'ios') ? 40: 40}
                                                                                                                     stylesFigma={stylesFigma}
@@ -81,13 +75,13 @@ export const ModalCitiesComponent = ( { getValor, propiedad = 'estado', idEstado
 
                                                                     { propiedad==='municipio' && (
                                                                                     <FlatList
-                                                                                    data={ municipiosOfEstadosOfVenezuela(idEstado)[0].municipios }
+                                                                                    data={ municipiosOfEstadosOfVenezuela(idEstado)[0]?.municipios || [] }
                                                                                     renderItem={ ( { item } ) =><FlatListMenuItemFigma 
                                                                                                                         menuItem={ item } 
                                                                                                                         cerrarModal={ (value) => enviarValor(value)}
                                                                                                                         propiedad={'municipio'}/>}
-                                                                                    keyExtractor= { (item) => item.id_estado}
-                                                                                    ListHeaderComponent = { () =>  <HeaderTitleFigma title={`Municipiosuuuu - ${idEstado}`}
+                                                                                    keyExtractor= { (item) => Math.random().toString()}
+                                                                                    ListHeaderComponent = { () =>  <HeaderTitleFigma title={`Municipios`}
                                                                                                                     marginTop={(Platform.OS === 'ios') ? 40: 40}
                                                                                                                     stylesFigma={stylesFigma}
                                                                                                                     type='big'

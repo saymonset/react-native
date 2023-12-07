@@ -34,7 +34,7 @@ export const  SeguridadFigmaComponent = ({ navigation }) => {
 
   const onSubmit = async ( event ) => {
       event.preventDefault();
-      if( inputValue.trim().length <= 8){
+      if( inputValue.trim().length <= 7){
         setShowWarnings(true);
         return;
       }

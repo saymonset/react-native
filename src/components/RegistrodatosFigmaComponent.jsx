@@ -33,8 +33,8 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleMunicipio, setIsVisibleMunicipio] = useState(false);
   const [idEstado, setIdEstado] = useState(0);
-  const [estado, setEstado] = useState(null);
-  const [municipio, setMunicipio] = useState(null);
+  const [estado, setEstado] = useState('');
+  const [municipio, setMunicipio] = useState("");
   const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
   const onSelectTrigger = (value ) => {
       setSelectedGeneroId(value);
@@ -43,7 +43,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
   const { token, phone } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
   const { name,  lastname,  password, ci, email, state, city, birth, gender_id, status, onChange } = useForm({
-      name:'', lastname:'', password:'', ci:'', email:'', state:undefined, city:'', birth:'', gender_id:'', status:true
+      name:'', lastname:'', password:'', ci:'', email:'', state:'', city:'', birth:'', gender_id:'', status:true
    });
   const { estadosOfVenezuela, municipiosOfEstadosOfVenezuela } = PaisScreen(); 
 
@@ -58,31 +58,17 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
 
    const getValor = (menuItem: Pais,  propiedad ) => {
      if (propiedad === 'estado'){
-        // console.log({propiedad});
-        // console.log({ menuItem})
         setIsVisible(false);
         setIdEstado(menuItem.id_estado) 
         let mun = municipiosOfEstadosOfVenezuela(menuItem.id_estado)[0].municipios;
-        // let [ objeto ] = mun;
-        // let { municipios } = objeto;
-        
-     //   console.log('Grabando------------')
-      //  console.log( { municipios })
-        //onChange(`${menuItem.capital}-${menuItem.estado}`, 'state')
         setEstado(`${menuItem.capital}-${menuItem.estado}`)
         setMunicipio('');
-      //  console.log('Grabando--------fin----')
-        //onChange(``, 'city')
      }
 
      if (propiedad === 'municipio'){
         setIsVisibleMunicipio(false);
-       //onChange(`${menuItem.capital}-${menuItem.municipio}`, 'city')
         setMunicipio(`${menuItem.capital}-${menuItem.municipio}`);
      }
-  
-   
-     console.log({ menuItem });
     }
 
    
@@ -126,7 +112,6 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                 style={{ flex: 1}}
                 behavior={ ( Platform.OS === 'ios') ? 'padding': 'height' }
             >
-
                 <ScrollView>
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={ comunStylesFigma.formContainer }>                
@@ -136,7 +121,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                             style={[comunStylesFigma.container]}>
                                                 <View style={[comunStylesFigma.column]}>
                                                     <View style = {{ marginVertical:20}}>
-                                                        <Text style={ comunStylesFigma.label }>Nombre:</Text>
+                                                        <Text style={ comunStylesFigma.label }>Nombre:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                                         <TextInput 
                                                             placeholder="Enter your name:"
                                                             placeholderTextColor="rgba(0,0,0,0.4)"
@@ -156,7 +141,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                         />
                                                     </View> 
                                                     <View style = {{ marginVertical:20}}>
-                                                        <Text style={ comunStylesFigma.label }>Apellido:</Text>
+                                                        <Text style={ comunStylesFigma.label }>Apellido:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                                         <TextInput 
                                                             placeholder="Enter your lastname:"
                                                             placeholderTextColor="rgba(0,0,0,0.4)"
@@ -176,11 +161,11 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                         />
                                                     </View> 
                                                     <View style = {{ marginVertical:20}}>
-                                                                <Text style={ comunStylesFigma.label }>Sexo:</Text>
+                                                                <Text style={ comunStylesFigma.label }>Sexo:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                                                 <UseGenderComponent onPress={ onSelectTrigger }/> 
                                                     </View>  
                                                     <View style = {{ marginVertical:20}}>
-                                                                <Text style={ comunStylesFigma.label }>Cedula:</Text>
+                                                                <Text style={ comunStylesFigma.label }>Cedula:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                                                 <TextInput 
                                                                     placeholder="V- 12345678"
                                                                     placeholderTextColor="rgba(0,0,0,0.4)"
@@ -200,7 +185,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                 />
                                                     </View>  
                                                     <View style = {{ marginVertical:20}}>
-                                                            <Text style={ comunStylesFigma.label }>Dirección de correo electrónico:</Text>
+                                                            <Text style={ comunStylesFigma.label }>Dirección de correo electrónico:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                                             <TextInput 
                                                                 placeholder="Enter your email:"
                                                                 placeholderTextColor="rgba(0,0,0,0.4)"
@@ -255,7 +240,6 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
 
 
                                                     { estado && ( <View style = {{ marginVertical:20}}>
-                                                                            <Text style={ comunStylesFigma.label }>Municipio:</Text>
                                                                             <Text  style={[ 
                                                                                     comunStylesFigma.inputField,
                                                                                     ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
@@ -277,7 +261,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                                 ]}
                                                                                 onPress={() => showModalMunicipio(true)}
                                                                                 >
-                                                                                <Text style={{ color: 'white' }}>Selecciona:</Text>
+                                                                                <Text style={{ color: 'white' }}> Municipio</Text>
                                                                                 </TouchableOpacity>
                                                      </View>    )}
 

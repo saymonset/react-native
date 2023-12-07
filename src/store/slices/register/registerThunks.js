@@ -22,13 +22,20 @@ export const registerThunks = ( register:Register ): AnyAction  => {
           if (token){
             await AsyncStorage.setItem('token', token ); 
           }
+          console.log('------------------1------------------')
+          console.log({ register })
           // TODO: realizar peticion http
            const {data} = await vaccinesApi.post(`/users/p`,{ ...register  } );
+
+           console.log('------------------2------------------')
+         
        
           const { statusCode, body, message, resp, } = data;
-
+          console.log('------------------3------------------')
           console.log({data});
+          console.log('------------------24------------------')
 
+           console.log({statusCode});
           if (statusCode == 401 || !resp) {
               dispatch( addMessage("Error: "+JSON.stringify(data)))
               return 
@@ -39,6 +46,7 @@ export const registerThunks = ( register:Register ): AnyAction  => {
               resp
               
             };
+            console.log('------------------5------------------')
           dispatch( setRegisterResponse(payload) );
 
           

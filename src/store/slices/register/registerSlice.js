@@ -44,7 +44,6 @@ export const registerSlice = createSlice({
         },
        addMessage: ( state, { payload } ) =>{
                 state.isLoading = false;
-                console.log({payload})
                 state.message = payload
         },
         removeMessage: ( state, { payload }) => {
