@@ -20,7 +20,7 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const SendCodeFigmaScreen = ({ navigation }: Props) => {
 
-  const {  message, isSendCode , token } = useSelector( (state: store ) => state.sendSmsStore);
+  const {  message, isSendCode , token,resp } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
@@ -57,7 +57,12 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
       {/* Solo para sacar mensajes de error por pantalla */}
       useEffect(() => {
           if( message.length === 0 ) return;
-              abrirModal();
+               // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
+               if (resp){
+                cerrarModal();
+              }else{
+                abrirModal();
+              }
       }, [ message ])
 
  

@@ -40,7 +40,7 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
         onClearError();
 
           if (resp){
-              navigation.replace('LoginScreen')
+              navigation.replace('LoginFigmaScreen')
           }
       }
 
@@ -51,7 +51,12 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
      useEffect(() => {
         if( message.length === 0 ) return;
 
-        abrirModal();
+         // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
+         if (resp){
+            cerrarModal();
+          }else{
+            abrirModal();
+          }
        
     }, [ message ])
 

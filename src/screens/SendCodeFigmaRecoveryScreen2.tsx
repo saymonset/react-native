@@ -68,8 +68,7 @@ const onInputChange = (value) => {
       {/* Solo para sacar mensajes de error por pantalla */}
       useEffect(() => {
           if( message.length === 0 ) return;
-                 // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
-            console.log({resp})     
+            // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
             if (resp){
               cerrarModal();
             }else{

@@ -20,8 +20,6 @@ const enviarCode = async ( dispatch, phone, ci ) => {
           return;
          }
          
-         console.log('-----------saymons--------------')
-         console.log({ resp })
          let payload = {
             isLoading: false,
             token: '',
