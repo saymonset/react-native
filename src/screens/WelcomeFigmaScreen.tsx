@@ -84,7 +84,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
                               <View style={ stylesFigma.buttonContainer  }>
                                   <TouchableOpacity
                                       activeOpacity={ 0.8 }
-                                      onPress={ () => navigation.replace('SendSmsScreen') }
+                                      onPress={ () => navigation.replace('LoginFigmaScreen') }
                                   >
                                       <Text style={ [stylesFigma.buttonTextBlack ] }>Inicia sessión</Text>
                                   </TouchableOpacity>

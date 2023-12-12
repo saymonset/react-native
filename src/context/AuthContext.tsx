@@ -28,6 +28,7 @@ export interface  AuthContextProps {
      signIn: () => void;
      genderLoad: () => void;
      relationshipLoad: () => void;
+     // Carga los generos y raltion ships en memoria de bad al contexto para tenerlos  ya cargados
      getGeneroRaltionSchipLoads :  () => void;
 }
 

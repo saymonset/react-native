@@ -101,22 +101,8 @@ export const  SeguridadFigmaComponent = ({ navigation }) => {
                                         </View> 
        
 </View>
-      
-            
-          
-              {/* Boton Send Msg */}
-                {/* Boton Check Code */}
-                {/**/}
-                 {/* Reset code*/}
-                 {/* <View style={ stylesFigma.newUserContainer  }>
-                                                    <TouchableOpacity
-                                                        activeOpacity={ 0.8 }
-                                                        onPress={  onResetSendSms}
-                                                    >
-                                                        <Text style={ stylesFigma.buttonText }>Reset {message}</Text>
-                                                    </TouchableOpacity>
-
-                                                </View> */}
+ 
+         
     </>
   )
 }

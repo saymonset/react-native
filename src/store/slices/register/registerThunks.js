@@ -46,7 +46,6 @@ export const registerThunks = ( register:Register ): AnyAction  => {
               resp
               
             };
-            console.log('------------------5------------------')
           dispatch( setRegisterResponse(payload) );
 
           
@@ -64,7 +63,6 @@ export const registerThunks = ( register:Register ): AnyAction  => {
 
  
 export const removeErrorThunks = (dispatch): AnyAction => {
-  console.log('desde removiendo errir create register')
       dispatch(removeMessage());
       return
   };

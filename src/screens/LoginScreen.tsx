@@ -47,9 +47,8 @@ useEffect(() => {
   const onLogin = async () => {
     Keyboard.dismiss();
     await dispatch(loginThunks( email, password));
-      // Cargamos el contexto global 
-    //  getGeneroRaltionSchipLoads();
 
+    // Carga los generos y raltion ships en memoria de bad al contexto para tenerlos  ya cargados
        getGeneroRaltionSchipLoads();
 }
  

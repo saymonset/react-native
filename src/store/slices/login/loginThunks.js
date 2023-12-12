@@ -9,9 +9,6 @@ import {  LoginState } from '../../../interfaces'
 
 export const loginThunks = ( email, password ): AnyAction  => {
     return async ( dispatch, getState) => {
-
-  
-
       try {
         //  dispatch( removeError())
           dispatch( startLoadingLogin())
@@ -39,15 +36,41 @@ export const loginThunks = ( email, password ): AnyAction  => {
               loginResponse: data,
             };
           dispatch( setLoginResponse(payload) );
-
-        
-
           
       } catch (error) {
            dispatch( addError("Error: "+error))
       }
-   
     }
+}
+
+export const loginCiThunks = ( ci, password ): AnyAction  => {
+  return async ( dispatch, getState) => {
+    try {
+        dispatch( startLoadingLogin())
+        // TODO: realizar peticion http
+    
+        const {data} = await vaccinesApi.post(`/login`,{ ci, password });
+        const { statusCode, token, resp, message, usuario, more } = data;
+
+        if ( !resp) {
+            dispatch( addError("Error: "+message))
+            return 
+        }
+        const payload: LoginState = {
+            email:more.email,
+            password,
+            isLoading: false,
+            status: 'authenticated',
+            token,
+            message: '',
+            loginResponse: data,
+          };
+        dispatch( setLoginResponse(payload) );
+        
+    } catch (error) {
+         dispatch( addError("Error: "+error))
+    }
+  }
 }
 
 

@@ -11,6 +11,8 @@ export interface SendSmsPayload {
     message?:    string;
     response?: Object;
     isSendCode?: boolean  | null;
+    resp?:boolean;
+    ci?: string;
 
     
 }

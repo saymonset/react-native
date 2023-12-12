@@ -7,10 +7,12 @@ import {  SendSmsRequest,SendSmsPayload} from '../../../interfaces/sendsms-inter
   const initialState: SendSmsPayload = {
     phone: '',
     isLoading: false,
+    resp:false,
     token: '',
     message: '',
     response: null,
-    isSendCode: false
+    isSendCode: false,
+    ci:'',
   };
 
 export const sendSmsSlice = createSlice({
@@ -21,12 +23,12 @@ export const sendSmsSlice = createSlice({
             state.isLoading = true;
         },
         setSmsResponse: ( state, { payload } ) => {
-            state.phone = payload.phone;
             state.isLoading = false;
             state.isSendCode = true;
             state.token = '',
             state.message = payload.message,
             state.response = payload.response;
+            state.phone = payload.phone;
         },
        addErrorSms: ( state, { payload } ) =>{
                 state.isLoading = false;
@@ -49,11 +51,28 @@ export const sendSmsSlice = createSlice({
             state.isLoading = false;
             state.isSendCode = false;
             state.message = payload.message;
+            state.phone = payload.phone;
+        },
+        passwordUpdate: ( state, { payload } ) =>  {
+            state.message = payload.message;
+            state.resp = payload.resp;
+            state.phone = null;
+            state.isLoading = false;
+            state.isSendCode = false;
+            state.token = '';
+            state.response = '';
         },
          setPassword: (state,  { payload } ) => {
             state.password = payload.password;
         },
+        setCi: (state,  { payload } ) => {
+            state.ci = payload.ci;
+        },
+        setPhone: (state,  { payload } ) => {
+            state.phone = payload.phone;
+        },
     }
 });
 // Action creators are generated for each case reducer function
-export const { startLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, resetSendSms, checkCode  } = sendSmsSlice.actions;
+export const { startLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, 
+             resetSendSms, checkCode, passwordUpdate, setCi, setPhone  } = sendSmsSlice.actions;

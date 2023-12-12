@@ -5,12 +5,11 @@ import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import {  resetSendSmsThunks, removeErrorSmsThunks } from '../store/slices/sendSms/index' 
 import { reEnviarCodeThunks, checkCodeThunks } from '../store/slices/sendSms/sendSmsThunks'
 import { LoadingScreen } from '../screens/LoadingScreen';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
+import { HeaderTitleFigma } from './HeaderTitleFigmaComponent';
 
-export const  SendCodeFigmaComponent = ({ navigation }) => {
+export const  SendCodeFigmaReusableComponent = ({ navigation }) => {
 
   const [ inputValue, setInputValue ] = useState('');
-
   const { isLoading, message, phone } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
 
@@ -31,11 +30,7 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
          await dispatch(checkCodeThunks( phone, inputValue.trim()));
          setInputValue('');
   }
-
-  const onResetSendSms= () => {
-    Keyboard.dismiss();
-    resetSendSmsThunks(dispatch);
-}
+ 
 
    if ( isLoading ) return <LoadingScreen /> 
 
@@ -68,8 +63,8 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
                                         </View>
 
                                         <View style={ {
-                                                     marginTop:0,
-                                                     paddingBottom:30,
+                                                     marginTop:30,
+                                                   //  paddingBottom:30,
                                                     // backgroundColor:'blue', 
                                                      justifyContent:'flex-start',
                                                      alignItems:'center',
@@ -80,7 +75,7 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
                                                                                                         stylesFigma={stylesFigma}
                                                                                                         type='small'
                                                                                                         ></HeaderTitleFigma>
-                                                        <View style={{marginTop:0}}>
+                                                        <View style={{marginTop:10}}>
                                                             <TouchableOpacity onPress={() => reEnviarCode()}>
                                                                 <Text style={{ color: 'blue' }}>Enviar de nuevo</Text>
                                                             </TouchableOpacity>
@@ -93,7 +88,7 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
                                                      flex:1,
                                                      justifyContent:'center',
                                                       ...stylesFigma.buttonContainer,
-                                                         marginTop:0
+                                                         marginTop:20
                                                          } }>
                                                     <TouchableOpacity
                                                         activeOpacity={ 0.8 }

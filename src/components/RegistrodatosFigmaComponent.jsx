@@ -73,31 +73,29 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
 
    
   const onRegister = async() => {
-    Keyboard.dismiss();
-    let obj = {
-       name,
-       lastname,
-       password:paswordFromSecurity,
-       ci,
-       email,
-       state:estado,
-       city:municipio,
-       birth,
-       gender_id:selectedGeneroId,
-       status,
-       token,
-       phone
-     };
+                Keyboard.dismiss();
+                let obj = {
+                name,
+                lastname,
+                password:paswordFromSecurity,
+                ci,
+                email,
+                state:estado,
+                city:municipio,
+                birth,
+                gender_id:selectedGeneroId,
+                status,
+                token,
+                phone
+                };
+                    let register: Register = { ...obj  };
 
-
-        let register: Register = { ...obj  };
-
-        console.log({phone})
-        await dispatch(registerThunks( register));
-       
-         {/** Nos vamos a la pantalla principal */}
-         onRegisterScreen();
-        }
+                    console.log({phone})
+                    await dispatch(registerThunks( register));
+                
+                    {/** Nos vamos a la pantalla principal */}
+                    onRegisterScreen();
+  }
 
         const onDateSelection = (date:Date)=>{
             onChange(date, 'birth')

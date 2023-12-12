@@ -18,16 +18,17 @@ export const stylesFigma = StyleSheet.create({
     title: {
         fontSize: 25,
         fontWeight: 'bold',
-        textAlign:"left",
-        marginLeft:20,
+        // textAlign:"left",
+        //  marginLeft:20,
         color: 'black',
     }
     ,
     titlesecund: {
         fontSize: 20,
-        textAlign:"left",
+        // textAlign:"left",
+        // marginHorizontal:30,
         color: 'black',
-        marginHorizontal:30
+       
     },
     numContainer: {
         alignItems: 'center',
@@ -47,7 +48,7 @@ export const stylesFigma = StyleSheet.create({
         borderRadius: 100,
         marginHorizontal: 10,
         width:170,
-        backgroundColor: '#0077FF', // Replace with the desired stronger blue color
+        backgroundColor: 'rgba(0, 119, 255, 0.7)', // Replace with the desired stronger blue color
       },
     buttonText: {
         fontSize: 15,

@@ -13,13 +13,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {  removeErrorSmsThunks } from '../store/slices/sendSms/index' ;
 import {  removeErrorThunks } from '../store/slices/register/index';
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
+import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { BackePageComponente } from '../components/BackePageComponente';
+// import { SeguridadFigmaReusableComponent } from '../components/SeguridadFigmaReusableComponent';
 
 
 interface Props extends StackScreenProps<any, any> {}
 
 
-export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
+export const ContactRecoveryFigmaScreen = ({ navigation }: Props) => {
 
   const {  message, isSendCode , token } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
@@ -30,7 +32,10 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
     setInputValue( value );
 }
     
-
+  const   onBack = async () => {
+        Keyboard.dismiss();
+        navigation.replace('WelcomeScreen')
+    }
 
 
             const cerrarModal = () => {
@@ -69,10 +74,9 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
           {/* Background */} 
            <BackgroundSendPhoneFigma></BackgroundSendPhoneFigma>
            
-           {/**  Boton regreso */}
-           <BackePageComponente navigation={navigation} page="LoginFigmaScreen" />
-
-  
+           
+    {/**  Boton regreso */}
+    <BackePageComponente navigation={navigation} page="LoginFigmaScreen" />
   
            <KeyboardAvoidingView
                 style={{ flex: 1 }}
@@ -83,26 +87,46 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
               <View style={ stylesFigma.formContainer }> 
 
                             <View style={{flex:1}}>
-                                        <HeaderTitleFigma title="Ingresa tu número de teléfono" 
+                                        <HeaderTitleFigma title="Contacto" 
                                                                             marginTop={(Platform.OS === 'ios') ? 40: 40}
                                                                             stylesFigma={stylesFigma}
                                                                             type='big'
-                                                                            marginBottom={20}
+                                                                            marginBottom={15}
                                                                             ></HeaderTitleFigma>
-                                        <HeaderTitleFigma title="Te enviaremos un mensaje SMS para verificar tu número de teléfono" 
-                                                                            marginTop={(Platform.OS === 'ios') ? -5: -5}
+
+                                          <HeaderTitleFigma title="Correo electrónico" 
+                                                                            marginTop={(Platform.OS === 'ios') ? 0: 0}
                                                                             stylesFigma={stylesFigma}
-                                                                            marginBottom={70}
+                                                                            marginBottom={0}
                                                                             type='small'
+                                                                            isAlertaAsterisco
                                                                             ></HeaderTitleFigma>
-                                        <HeaderTitleFigma title="Número de teléfono" 
-                                                                                          marginTop={(Platform.OS === 'ios') ? -5: -5}
-                                                                                          marginBottom={(Platform.OS === 'ios') ? 10: 0}
-                                                                                          stylesFigma={stylesFigma}
-                                                                                          type='small'
-                                                                                          ></HeaderTitleFigma>
-                  
-                                <SendPhonFigmaComponent navigation = { navigation }></SendPhonFigmaComponent>
+                                         {/* <SeguridadFigmaReusableComponent navigation = { navigation }></SeguridadFigmaReusableComponent> */}
+
+                                          <HeaderTitleFigma title="Mensaje" 
+                                                                            marginTop={(Platform.OS === 'ios') ? 0: 0}
+                                                                            stylesFigma={stylesFigma}
+                                                                            marginBottom={0}
+                                                                            type='small'
+                                                                            isAlertaAsterisco
+                                                                            ></HeaderTitleFigma>
+                                       
+
+                                         <View style={{flex:1}}></View>
+                                          <View style={ { alignItems:'center', marginTop:0, marginBottom:30} }>
+                                                <TouchableOpacity
+                                                    activeOpacity={ 0.8 }
+                                                    style={  [{...stylesFigma.button} ]}
+                                                    onPress={ () =>{} }
+                                                >
+                                                    <Text style={ stylesFigma.buttonText } >Siguiente</Text>
+                                                </TouchableOpacity>
+                                           </View> 
+                                         
+
+                                                                                              
+                        
+                                       
 
                                
                                 { isVisible && (<ModalMessageComponent getValor = { () => cerrarModal() }
