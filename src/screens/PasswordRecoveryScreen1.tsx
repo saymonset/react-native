@@ -23,7 +23,7 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const PasswordRecoveryScreen1 = ({ navigation }: Props) => {
 
-  const {  message, isSendCode, isLoading } = useSelector( (state: store ) => state.sendSmsStore);
+  const {  message, isSendCode, isLoading, resp } = useSelector( (state: store ) => state.sendSmsStore);
 
   const dispatch = useDispatch();
 
@@ -67,7 +67,6 @@ const onSecurityInputChange = (value) => {
               setIsVisible(false);
               //Borramos mensajes del thrunk
               onClearError();
-           
               if (isSendCode){
                 //Limpoiamos el phone
                    setTlf('');
@@ -76,7 +75,6 @@ const onSecurityInputChange = (value) => {
                    onChange('','ci');
                    navigation.replace("SendCodeFigmaRecoveryScreen2")
               }
-              
     }
 
     const abrirModal = () => {
@@ -106,9 +104,14 @@ const onSecurityInputChange = (value) => {
     
      {/* Solo para sacar mensajes de error por pantalla */}
     useEffect(() => {
-        console.log({ message })
         if( message.length === 0 ) return;
-            abrirModal();
+          // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
+            if (resp){
+              cerrarModal();
+            }else{
+              abrirModal();
+            }
+            
     }, [ message ])
 
  
@@ -166,7 +169,7 @@ const onSecurityInputChange = (value) => {
                                                                             isAlertaAsterisco
                                                                             ></HeaderTitleFigma>
                                          
-                                         <View style={{flex:1}}>
+                                         <View style={{flex:1, marginBottom:50}}>
                                                        <View  style={{flex:1, flexDirection:'row'}}>
                                                                 <View style={{flex:1,  flexWrap:'wrap', left:30, marginRight:20}}>
                                                                         <TextInput 

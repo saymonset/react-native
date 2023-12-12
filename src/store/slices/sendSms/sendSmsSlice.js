@@ -29,14 +29,17 @@ export const sendSmsSlice = createSlice({
             state.message = payload.message,
             state.response = payload.response;
             state.phone = payload.phone;
+            state.resp = payload.resp;
         },
        addErrorSms: ( state, { payload } ) =>{
                 state.isLoading = false;
                 state.message = payload;
+                state.resp = false;
         },
         removeErrorSms: ( state, { payload }) => {
             state.message = '';
             state.isLoading = false;
+            state.resp = false;
         },
         resetSendSms: ( state, { payload } ) =>  {
                 state.phone = null;
@@ -45,6 +48,7 @@ export const sendSmsSlice = createSlice({
                 state.token = '';
                 state.message = '';
                 state.response = '';
+                state.resp = false;
         },
         checkCode: ( state, { payload } ) =>  {
             state.token = payload.token;
@@ -52,6 +56,7 @@ export const sendSmsSlice = createSlice({
             state.isSendCode = false;
             state.message = payload.message;
             state.phone = payload.phone;
+            state.resp = payload.resp;
         },
         passwordUpdate: ( state, { payload } ) =>  {
             state.message = payload.message;

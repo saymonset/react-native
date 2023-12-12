@@ -20,13 +20,16 @@ const enviarCode = async ( dispatch, phone, ci ) => {
           return;
          }
          
+         console.log('-----------saymons--------------')
+         console.log({ resp })
          let payload = {
             isLoading: false,
             token: '',
             message: 'Success SMS: '+message,
             response: null,
             isSendCode: true,
-            phone
+            phone,
+            resp
           };
         dispatch( setSmsResponse(payload) );
 
@@ -155,7 +158,8 @@ export const checkCodeThunks = (  phone, code   ): AnyAction  => {
          const payload = {
             token,
             message: 'Success Code: '+message,
-            phone
+            phone,
+            resp
           };
           
         dispatch( checkCode(payload) );
@@ -177,10 +181,7 @@ export const changuePasswordThunks = (  password, password2, phone, code   ): An
           return;
       }
       // TODO: realizar peticion http
-  console.log('----------------------00001------------------------');
-        console.log( { phone, code, password });
         let response = await vaccinesApi.post('/CheckCode/passwordUpdate', { phone, code, password } );
-        console.log('----------------------00002------------------------');
         let {data} = response;
 
         const { resp, message} = data; 

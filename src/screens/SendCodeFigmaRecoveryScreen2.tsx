@@ -22,7 +22,7 @@ export const SendCodeFigmaRecoveryScreen2 = ({ navigation }: Props) => {
   //const {  message, isSendCode , token } = useSelector( (state: store ) => state.sendSmsStore);
   const [isVisible, setIsVisible] = useState(false);
   const [ codigo, setCodigo ] = useState('');
-  const { isLoading, message, phone, token, ci } = useSelector( (state: store ) => state.sendSmsStore);
+  const { isLoading, message, phone, token, ci, resp } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
 
 
@@ -36,15 +36,11 @@ const onInputChange = (value) => {
   setCodigo( value );
 }
 
-const onSubmit = async ( event ) => {
-  event.preventDefault();
-  if( codigo.trim().length <= 1) return;
-  console.log('---------------------')
-  console.log({phone, ci})
-  console.log('---------------------')
-     await dispatch(checkCodeThunks( phone, codigo.trim()));
-    
-}
+    const onSubmit = async ( event ) => {
+      event.preventDefault();
+      if( codigo.trim().length <= 1) return;
+        await dispatch(checkCodeThunks( phone, codigo.trim()));
+    }
 
  
      
@@ -72,7 +68,13 @@ const onSubmit = async ( event ) => {
       {/* Solo para sacar mensajes de error por pantalla */}
       useEffect(() => {
           if( message.length === 0 ) return;
+                 // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
+            console.log({resp})     
+            if (resp){
+              cerrarModal();
+            }else{
               abrirModal();
+            }
       }, [ message ])
 
 
