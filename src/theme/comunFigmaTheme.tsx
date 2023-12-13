@@ -80,5 +80,10 @@ export const comunStylesFigma = StyleSheet.create({
         fontSize: 20,
     },
     
+    
 
-})
+});
+
+export const colores = {
+        primary:'#5856D6'
+}
