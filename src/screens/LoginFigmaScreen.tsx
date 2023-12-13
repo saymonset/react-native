@@ -15,6 +15,7 @@ import { ModalMessageComponent } from '../components/ModalMessageComponent';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { loginCiThunks, removeErrorThunks } from '../store/slices/login/loginThunks'
 import { AuthContext } from '../context/AuthContext';
+import { LoadingScreen } from './LoadingScreen';
 
 
 interface Props extends StackScreenProps<any, any> {}
@@ -22,7 +23,7 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const LoginFigmaScreen = ({ navigation }: Props) => {
 
-  const {  message, status  } = useSelector( (state: store ) => state.loginStore);
+  const {  message, status, isLoading  } = useSelector( (state: store ) => state.loginStore);
   const {  getGeneroRaltionSchipLoads } = useContext(AuthContext)
 
   const dispatch = useDispatch();
@@ -30,16 +31,16 @@ export const LoginFigmaScreen = ({ navigation }: Props) => {
   const [secureText, setSecureText] = useState(true);
   const [showWarnings, setShowWarnings] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [ inputValue, setInputValue ] = useState('');
+  const [ password, setPassword ] = useState('');
 
 
-  const {password, ci, onChange } = useForm({
-         password:'', ci:'' 
+  const { ci, onChange } = useForm({
+          ci:'' 
  });
 
 
   const onInputChange = (value:any) => {
-    setInputValue( value );
+    setPassword( value );
 }
 
 
@@ -63,7 +64,6 @@ const onSecurityInputChange = (value) => {
               if (status==='authenticated'){
                    getGeneroRaltionSchipLoads();
               }
-              
     }
 
     const abrirModal = () => {
@@ -78,17 +78,12 @@ const onSecurityInputChange = (value) => {
       event.preventDefault();
       Keyboard.dismiss();
          
-         if( inputValue.trim().length <= 7){
+         if( password.trim().length <= 7){
             setShowWarnings(true);
             return;
           }
-          //Pasamos el valor a la variable password con onChange
-        //  onChange(inputValue, 'password')
-
-        
-          await dispatch(loginCiThunks( ci, inputValue));
-
-       
+          await dispatch(loginCiThunks( ci, password));
+          console.log('Hola')
     }
 
   const   onClearError = async () => {
@@ -176,7 +171,7 @@ const onSecurityInputChange = (value) => {
                                                                                   onInputChange(value);
                                                                                   onSecurityInputChange( value );
                                                                               } }
-                                                                              value={ inputValue }
+                                                                              value={ password }
                                                                               onSubmitEditing={ onLogin }
                                                                               autoCapitalize="none"
                                                                               autoCorrect={ false }
@@ -220,6 +215,10 @@ const onSecurityInputChange = (value) => {
                                                     </TouchableOpacity>                                                    
                                                                    <View style={{ marginBottom:0, borderBottomColor: 'rgba(0,0,0,0.1)', borderBottomWidth: 2 }} /> 
                                                     </View>
+                                                    
+                                                    {   ( isLoading ) && <LoadingScreen /> }    
+
+                                                    
                                                         <View style={{marginTop:0}}>
                                                             <TouchableOpacity onPress={() => registrate()}>
                                                               <View style={{flexDirection:'row'}}>

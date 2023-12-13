@@ -23,6 +23,7 @@ import { PasswordRecoveryScreen1 } from '../screens/PasswordRecoveryScreen1';
 import { SendCodeFigmaRecoveryScreen2 } from '../screens/SendCodeFigmaRecoveryScreen2';
 import { ConfirmPasswordRecoveryFigmaScreen3 } from '../screens/ConfirmPasswordRecoveryFigmaScreen3';
 import { ContactRecoveryFigmaScreen } from '../screens/ContactRecoveryFigmaScreen';
+import { HomeFigmaTabRootScreen } from '../screens/HomeFigmaTabRootScreen';
 
 
 
@@ -47,18 +48,18 @@ export const Navigator = () => {
           ? (<>
                  
                  
-                 <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } /> 
+                  
+                  <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } /> 
                   <Stack.Screen name="LoginFigmaScreen" component={ LoginFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryScreen1" component={ PasswordRecoveryScreen1 } />
                   <Stack.Screen name="ContactRecoveryFigmaScreen" component={ ContactRecoveryFigmaScreen } />
                   <Stack.Screen name="SendCodeFigmaRecoveryScreen2" component={ SendCodeFigmaRecoveryScreen2 } />
                   <Stack.Screen name="ConfirmPasswordRecoveryFigmaScreen3" component={ ConfirmPasswordRecoveryFigmaScreen3 } />
-                  
                   <Stack.Screen name="SendPhoneFigmaScreen" component={ SendPhoneFigmaScreen } />
                   <Stack.Screen name="SendCodeFigmaScreen" component={ SendCodeFigmaScreen } />
-                  
                   <Stack.Screen name="SeguridadFigmaScreen" component={ SeguridadFigmaScreen } />
                   <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } /> 
+                  
                  
                   <Stack.Screen name="LoginScreen" component={ LoginScreen } />
                   <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
@@ -67,6 +68,7 @@ export const Navigator = () => {
             </>)
           : (<>
                {/** Este HomeScreen es el principa que lama el menu*/}
+                <Stack.Screen name="HomeFigmaTabRootScreen" component={ HomeFigmaTabRootScreen } /> 
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
                 <Stack.Screen name="DependentScreen" component={ DependentScreen } />
                 <Stack.Screen name="TextInputScreen" component={TextInputScreen} />

@@ -30,6 +30,9 @@ yarn add @react-native-community/datetimepicker --save
 yarn add react-native-elements
 yarn add react-native-modal-datetime-picker
 
+7.1 Tabs
+yarn add @react-navigation/bottom-tabs
+
 8. Instalar venezuela
 npm install venezuela --save
 npx pod-install

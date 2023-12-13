@@ -8,13 +8,10 @@ import { WhiteLogo } from '../components/WhiteLogo';
 import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {  passwordRecoveryThunks, removeErrorSmsThunks, sendSmsThunks } from '../store/slices/sendSms/index' ;
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { AuthContext } from '../context/AuthContext';
-import { SendPhonFigmaReusableComponent } from '../components/SendPhonFigmaReusableComponent';
 import { LoadingScreen } from './LoadingScreen';
 
 
